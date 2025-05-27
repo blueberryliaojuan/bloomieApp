@@ -24,7 +24,7 @@ function SplashScreen({ navigation }) {
       <Image
         source={require("../assets/logoWhite.png")}
         style={{ height: 60, marginTop: 40, alignSelf: "center" }}
-        resizeMode="contain" // Prevents the image from being cropped
+        resizeMode="contain" //
       />
     </View>
   );

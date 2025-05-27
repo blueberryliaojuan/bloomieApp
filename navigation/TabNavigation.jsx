@@ -12,7 +12,11 @@ function TabNavigation() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="splash" component={SplashScreen} />
-      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen
+        name="home"
+        component={HomeScreen}
+        screenOptions={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

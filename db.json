@@ -1,0 +1,196 @@
+{
+  "flowers": [
+    {
+      "id": "bloomie01",
+      "name": "Whispers of the Rose",
+      "description": "Beautiful roses, whispering love and passion in every petal.",
+      "imageUrl": "../assets/img/flowerBouquet01.jpeg",
+      "imageKey": "flowerBouquet01",
+      "img": "img1",
+      "price": 25,
+      "tags": ["flowerBouquet", "romantic", "rose", "spring"],
+      "favorite": true,
+      "reviews": [
+        {
+          "user": "Alice",
+          "rating": 5,
+          "comment": "Absolutely stunning roses!"
+        },
+        {
+          "user": "Bob",
+          "rating": 4,
+          "comment": "Loved the colors, but some petals were a bit dry."
+        }
+      ]
+    },
+    {
+      "id": "bloomie02",
+      "name": "Golden Glow of the Tulip",
+      "description": "A vibrant yellow tulip, radiating warmth and sunshine in a single bloom.",
+      "imageUrl": "../assets/img/flowerBouquet02.jpeg",
+      "imageKey": "flowerBouquet02",
+      "img": "img2",
+      "price": 35,
+      "tags": ["flowerBouquet", "cheerful", "tulip", "spring"],
+      "favorite": false,
+      "reviews": [
+        {
+          "user": "Chris",
+          "rating": 5,
+          "comment": "The perfect addition to my spring table!"
+        },
+        {
+          "user": "Dana",
+          "rating": 4,
+          "comment": "Bright and cheerful, just as expected."
+        }
+      ]
+    },
+    {
+      "id": "bloomie03",
+      "name": "Sun’s Embrace",
+      "description": "A bright sunflower that follows the sun, basking in its golden embrace.",
+      "imageUrl": "../assets/img/flowerBouquet03.jpeg",
+      "imageKey": "flowerBouquet03",
+      "img": "img3",
+      "price": 25,
+      "tags": ["flowerBouquet", "vibrant", "sunflower", "summer"],
+      "favorite": true,
+      "reviews": [
+        {
+          "user": "Ellen",
+          "rating": 4,
+          "comment": "Lovely, but wish they were larger."
+        }
+      ]
+    },
+    {
+      "id": "bloomie04",
+      "name": "Pure Grace of the Daisy",
+      "description": "A delicate white daisy, symbolizing purity and simplicity in every petal.",
+      "imageUrl": "../assets/img/flowerBouquet04.jpeg",
+      "imageKey": "flowerBouquet04",
+      "img": "img4",
+      "price": 20,
+      "tags": ["flowerBouquet", "minimalist", "daisy", "spring"],
+      "favorite": true,
+      "reviews": [
+        {
+          "user": "Frank",
+          "rating": 5,
+          "comment": "Simple and elegant, exactly what I needed."
+        }
+      ]
+    },
+    {
+      "id": "bloomie05",
+      "name": "Orchid’s Elegance",
+      "description": "An exotic purple orchid, a symbol of beauty and grace that never fades.",
+      "imageUrl": "../assets/img/flowerBouquet05.jpeg",
+      "imageKey": "flowerBouquet05",
+      "img": "img5",
+      "price": 30,
+      "tags": ["flowerBouquet", "exotic", "orchid", "luxury"],
+      "favorite": true,
+      "reviews": [
+        {
+          "user": "Grace",
+          "rating": 5,
+          "comment": "Absolutely worth every penny!"
+        },
+        {
+          "user": "Hannah",
+          "rating": 4,
+          "comment": "Great, but a bit pricey."
+        }
+      ]
+    },
+    {
+      "id": "bloomie06",
+      "name": "Sun’s Radiance",
+      "description": "A bright sunflower, basking in the sunlight, always reaching for the sky.",
+      "imageUrl": "../assets/img/flowerBouquet06.jpeg",
+      "imageKey": "flowerBouquet06",
+      "img": "img6",
+      "price": 40,
+      "tags": ["flowerBouquet", "sunny", "sunflower", "vivid"],
+      "favorite": false,
+      "reviews": [
+        {
+          "user": "Ian",
+          "rating": 5,
+          "comment": "Brightened my whole day!"
+        }
+      ]
+    },
+    {
+      "id": "bloomie07",
+      "name": "Daisy’s Dream",
+      "description": "A delicate white daisy, gentle and serene, perfect for moments of quiet reflection.",
+      "imageUrl": "../assets/img/flowerBouquet07.jpeg",
+      "imageKey": "flowerBouquet07",
+      "img": "img7",
+      "price": 25,
+      "tags": ["flowerBouquet", "peaceful", "daisy", "simple"],
+      "favorite": true,
+      "reviews": [
+        {
+          "user": "Jack",
+          "rating": 4,
+          "comment": "Nice, but not very unique."
+        }
+      ]
+    },
+    {
+      "id": "bloomie08",
+      "name": "Orchid’s Secret",
+      "description": "An exotic purple orchid, unfolding its beauty like a hidden secret waiting to be discovered.",
+      "imageUrl": "../assets/img/flowerBouquet08.jpeg",
+      "imageKey": "flowerBouquet08",
+      "img": "img8",
+      "price": 35,
+      "tags": ["flowerBouquet", "mystic", "orchid", "unique"],
+      "favorite": false,
+      "reviews": [
+        {
+          "user": "Karen",
+          "rating": 5,
+          "comment": "Mysterious and beautiful!"
+        }
+      ]
+    },
+    {
+      "id": "bloomie09",
+      "name": "Majestic Orchid",
+      "description": "An exotic purple orchid, a royal bloom that stands out in elegance and charm.",
+      "imageUrl": "../assets/img/flowerBouquet09.jpeg",
+      "imageKey": "flowerBouquet09",
+      "img": "img9",
+      "price": 45,
+      "tags": ["flowerBouquet", "royal", "orchid", "premium"],
+      "favorite": false,
+      "reviews": [
+        {
+          "user": "Linda",
+          "rating": 5,
+          "comment": "The most elegant flowers I’ve ever seen!"
+        }
+      ]
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "A comment about the first flower.",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "Another comment about the first flower.",
+      "postId": "1"
+    }
+  ],
+  "profile": {
+    "name": "code"
+  }
+}

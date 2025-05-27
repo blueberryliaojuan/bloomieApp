@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons"; // 使用 Ionicons 图标库
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "react-native";
 import ShopScreen from "./Shop";
 import CartScreen from "./Cart";
 import ProfileScreen from "./Profile";
@@ -10,24 +11,29 @@ function HomeScreen() {
     <Tab.Navigator
       initialRouteName="shop"
       screenOptions={({ route }) => ({
-        headerShown: false, //hide the header
-        tabBarActiveTintColor: "white", // 激活时的图标颜色
-        tabBarInactiveTintColor: "#ddd", // 非激活时的图标颜色
-        tabBarStyle: { backgroundColor: "#C02C26" }, // Tab bar 背景色
+        headerShown: false,
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: "#ddd",
+        tabBarStyle: { backgroundColor: "#C02C26" },
         tabBarIcon: ({ focused }) => {
-          let iconName;
+          let iconSource;
           if (route.name === "shop") {
-            iconName = focused ? "basket" : "basket-outline";
+            iconSource = require("../assets/icons/flower.png");
           } else if (route.name === "cart") {
-            iconName = focused ? "basket" : "basket-outline";
+            iconSource = require("../assets/icons/cart.png");
           } else if (route.name === "profile") {
-            iconName = focused ? "person" : "person-outline";
+            iconSource = require("../assets/icons/profile.png");
           }
+
           return (
-            <Ionicons
-              name={iconName}
-              size={20}
-              color={focused ? "white" : "#ddd"} // 图标颜色根据选中状态变化
+            <Image
+              source={iconSource}
+              style={{
+                width: 24,
+                height: 24,
+                tintColor: focused ? "white" : "#ddd",
+              }}
+              resizeMode="contain"
             />
           );
         },

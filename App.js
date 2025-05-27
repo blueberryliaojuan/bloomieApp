@@ -1,11 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import "./global.css";
+import "react-native-reanimated";
+import { NavigationContainer } from "@react-navigation/native";
+import TabNavigation from "./navigation/TabNavigation";
 
 export default function App() {
   return (
-    <View className="flex-1 items-center justify-center bg-red-500">
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <NavigationContainer>
+      <TabNavigation />
+    </NavigationContainer>
   );
 }

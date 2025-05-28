@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   Image,
   View,
@@ -43,7 +44,7 @@ function Shop() {
       </View>
     </TouchableOpacity>
   );
-
+  const navigation = useNavigation();
   const renderFlowerItem = ({ item }) => (
     <FlowerCard
       image={imageMap[item.imageKey]} // Use the imageMap to get the correct image
@@ -51,6 +52,11 @@ function Shop() {
       price={item.price.toFixed(2)} // Format price to 2 decimal places
       onPress={() => {
         console.log(`Clicked on ${item.name}`);
+        navigation.navigate("flowerDetail", {
+          name: item.name,
+          image: imageMap[item.imageKey],
+          id: item.id,
+        });
       }}
     />
   );
@@ -182,7 +188,7 @@ function Shop() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderFlowerItem}
           numColumns={2} // Display items in two columns
-          columnWrapperStyle={{ justifyContent: "space-around" }}
+          columnWrapperStyle={{ justifyContent: "flex-start" }}
           showsVerticalScrollIndicator={false}
         />
       </View>

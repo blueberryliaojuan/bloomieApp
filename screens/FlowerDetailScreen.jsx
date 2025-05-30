@@ -46,7 +46,7 @@ function FlowerDetailScreen() {
   }, [id]);
 
   return (
-    <SafeAreaView className="flex-1 flex bg-white w-full max-w-[screenWidth]">
+    <SafeAreaView className="flex-1 flex bg-white w-full max-w-[screenWidth] relative">
       {/* header */}
       <View className="flex flex-row items-center justify-between px-8 ">
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -108,9 +108,9 @@ function FlowerDetailScreen() {
         ></FlatList>
       </View>
       {/* CTA */}
-      <View className="flex items-center justify-center p-8">
+      <View className="flex items-center justify-center p-8 absolute bottom-0 left-0 right-0">
         <View className="bg-[#C02C26] w-full max-w-[280px] h-14 rounded-full flex items-center justify-center">
-          <Text className="text-white font-bold text-lg">Add to Cart</Text>
+          <Text className="text-white font-bold text-m">Add to Cart</Text>
         </View>
       </View>
     </SafeAreaView>

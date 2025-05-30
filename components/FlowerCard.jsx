@@ -8,7 +8,10 @@ function FlowerCard({ image, name, price, onPress }) {
       className="mb-8 w-[48%] self-start mr-[4%]"
     >
       {/* Flower Image */}
-      <Image source={image} className="w-full h-40 rounded-t-lg object-cover" />
+      <Image
+        source={image}
+        className="w-full h-[160] rounded-t-lg object-cover"
+      />
 
       {/* Flower Name and Price */}
       <View className="p-2 items-center bg-white rounded-b-lg w-full">

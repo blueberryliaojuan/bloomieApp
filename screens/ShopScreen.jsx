@@ -23,7 +23,7 @@ function Shop() {
   // state to hold search text
   const [searchText, setSearchText] = useState("");
 
-  const filters = ["All", "Seasonal", "Occasion", "Customize"]; // Filter options
+  // const filters = ["All", "Seasonal", "Occasion", "Customize"]; // Filter options
 
   const renderCategories = ({ item }) => (
     <TouchableOpacity
@@ -32,7 +32,7 @@ function Shop() {
       <View
         className={`${
           activeFilter === item ? "bg-[#C02C26]" : "bg-white"
-        }  my-2 mr-4 px-4 py-1.5 rounded-xl shadow-md`}
+        }  my-2 mr-4 px-8 py-1.5 rounded-xl shadow-md`}
       >
         <Text
           className={`font-semibold ${
@@ -147,15 +147,15 @@ function Shop() {
 
   return (
     <SafeAreaView>
-      <View className="flex flex-row items-center justify-start">
+      <View className="flex flex-row items-center justify-start mx-8">
         <Image
           source={require("../assets/flowerLogoRed.png")}
-          className="w-10 h-10 ml-4 mt-4"
+          className="w-10 h-10  mt-4"
           resizeMode="contain"
         />
         <Text className="text-xl font-bold ml-2 mt-4">Good morning, Ella</Text>
       </View>
-      <View className=" mt-5 px-4 relative">
+      <View className=" mt-5 px-8 relative">
         <InputField
           placeholder="Search"
           value={searchText}
@@ -163,7 +163,7 @@ function Shop() {
           className="border border-slate-400 rounded-xl p-2"
         />
         <TouchableOpacity
-          className="absolute right-4 top-0 bg-[#C02C26] w-14 rounded-r-xl p-4"
+          className="absolute right-8 top-0 bg-[#C02C26] w-14 rounded-r-xl p-4"
           onPress={() => fetchFlowersByName(searchText)}
         >
           <Image
@@ -182,7 +182,7 @@ function Shop() {
           renderItem={renderCategories} // render each filter item
         ></FlatList>
       </View> */}
-      <View className="px-4 mt-5">
+      <View className="px-8 mt-5">
         <FlatList
           data={flowers}
           keyExtractor={(item) => item.id.toString()}

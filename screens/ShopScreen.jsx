@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "../components/InputField";
@@ -108,7 +109,6 @@ function Shop() {
       try {
         //React Native emulators often need special handling for local servers:
         //For iOS Simulator: http://127.0.0.1:3000/flowers works fine.
-
         const response = await fetch(`${HOST}/flowers`);
         console.log("Fetching flowers data from server...");
         if (!response.ok) {
@@ -144,6 +144,25 @@ function Shop() {
       setIsLoading(false);
     }
   };
+
+  // Conditionally define content based on state
+  let content;
+  if (isLoading) {
+    content = <ActivityIndicator size="large" color="#C02C26" />;
+  } else if (error) {
+    content = <Text className="text-red-500 text-center">{error}</Text>;
+  } else {
+    content = (
+      <FlatList
+        data={flowers}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderFlowerItem}
+        numColumns={2}
+        columnWrapperStyle={{ justifyContent: "flex-start" }}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -183,14 +202,15 @@ function Shop() {
         ></FlatList>
       </View> */}
       <View className="px-8 mt-5">
-        <FlatList
+        {/* <FlatList
           data={flowers}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderFlowerItem}
           numColumns={2} // Display items in two columns
           columnWrapperStyle={{ justifyContent: "flex-start" }}
           showsVerticalScrollIndicator={false}
-        />
+        /> */}
+        {content}
       </View>
     </SafeAreaView>
   );

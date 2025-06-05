@@ -7,6 +7,7 @@ import {
   setOnBoardingFlag,
   getOnBoardingFlag,
 } from "../services/OnboardingManager";
+
 import { useState, useEffect } from "react";
 
 const Stack = createStackNavigator();
@@ -18,15 +19,19 @@ function TabNavigation() {
   useEffect(() => {
     // Check if the onboarding flag is set
     getOnBoardingFlag().then((flag) => {
+      console.log("🚩flag", flag);
       if (flag === null) {
-        // If not set, initialize it to true
-        setOnBoardingFlag(true);
+        // If not set, it's the first launch, initialize it to false
+        setOnBoardingFlag(false);
+        setObFlag(false);
+      } else {
+        setObFlag(true); // already launched
       }
     });
   }, []);
   return (
     <Stack.Navigator
-      initialRouteName="splash"
+      initialRouteName={obFlag ? "home" : "splash"}
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="splash" component={SplashScreen} />

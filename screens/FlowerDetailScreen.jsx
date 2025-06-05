@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -44,6 +45,24 @@ function FlowerDetailScreen() {
     };
     fetchFlowerData();
   }, [id]);
+
+  if (loading) {
+    // show loading indicator
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#C02C26" />
+        <Text className="text-[#C02C26] font-bold mt-4">Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+  if (error) {
+    // indicate wrong
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <Text className="text-red-500 font-bold">{error}</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 flex bg-white w-full max-w-[screenWidth] relative">

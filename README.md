@@ -44,4 +44,3 @@ Bloomie is a flower store offering both in-store and online shopping options.
 1. This was a group design project with Ju and Kiko, and we plan to develop it using React Native this term. However, while coding, I noticed the design needs some refinement, which we will work on together later.
 2. JSON Server current version 1.0.0-beta does not support "name_like=" queries. To use this feature, you should switch to version @0.17.4. Additionally, the newer version resolves the "Network request failed" issue. To ensure the server listens on all network interfaces and not just the loopback address, include the --host 0.0.0.0 flag when starting the server.
 3. React Native emulators often need special handling for local servers.For iOS Simulator: http://127.0.0.1:3000/flowers works fine. So it's better set a variable and check platform at beginning.
-4.

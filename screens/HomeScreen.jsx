@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator();
 function HomeScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="shopNav"
+      initialRouteName="shop"
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: "white",
@@ -18,7 +18,7 @@ function HomeScreen() {
         tabBarStyle: { backgroundColor: "#C02C26" },
         tabBarIcon: ({ focused }) => {
           let iconSource;
-          if (route.name === "shopNav") {
+          if (route.name === "shop") {
             iconSource = require("../assets/icons/flower.png");
           } else if (route.name === "cart") {
             iconSource = require("../assets/icons/cart.png");
@@ -40,7 +40,7 @@ function HomeScreen() {
         },
       })}
     >
-      <Tab.Screen name="shopNav" component={ShopStackNavigation} />
+      <Tab.Screen name="shop" component={ShopStackNavigation} />
       <Tab.Screen name="cart" component={CartScreen} />
       <Tab.Screen name="profile" component={ProfileScreen} />
     </Tab.Navigator>

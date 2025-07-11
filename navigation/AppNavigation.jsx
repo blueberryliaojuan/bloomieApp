@@ -1,4 +1,3 @@
-import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "../screens/SplashScreen";
 import HomeScreen from "../screens/HomeScreen";
@@ -12,9 +11,10 @@ import { useState, useEffect } from "react";
 
 const Stack = createStackNavigator();
 
-function TabNavigation() {
+function AppNavigation() {
   // add state for onboarding flag
   const [obFlag, setObFlag] = useState(null);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if the onboarding flag is set
@@ -27,21 +27,19 @@ function TabNavigation() {
       } else {
         setObFlag(true); // already launched
       }
+      // setLoading(false);
     });
   }, []);
+  // if (loading) return null;
   return (
     <Stack.Navigator
       initialRouteName={obFlag ? "home" : "splash"}
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="splash" component={SplashScreen} />
-      <Stack.Screen
-        name="home"
-        component={HomeScreen}
-        screenOptions={{ headerShown: false }}
-      />
+      <Stack.Screen name="home" component={HomeScreen} />
     </Stack.Navigator>
   );
 }
 
-export default TabNavigation;
+export default AppNavigation;

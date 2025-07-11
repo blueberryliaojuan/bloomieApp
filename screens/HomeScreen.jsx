@@ -5,6 +5,7 @@ import ShopStackNavigation from "../navigation/ShopStackNavigation";
 import ShopScreen from "./ShopScreen";
 import CartScreen from "./Cart";
 import ProfileScreen from "./Profile";
+import FavoriteScreen from "./FavoriteScreen";
 
 const Tab = createBottomTabNavigator();
 function HomeScreen() {
@@ -20,6 +21,8 @@ function HomeScreen() {
           let iconSource;
           if (route.name === "shop") {
             iconSource = require("../assets/icons/flower.png");
+          } else if (route.name === "favorite") {
+            iconSource = require("../assets/icons/heart.png");
           } else if (route.name === "cart") {
             iconSource = require("../assets/icons/cart.png");
           } else if (route.name === "profile") {
@@ -42,6 +45,7 @@ function HomeScreen() {
     >
       <Tab.Screen name="shop" component={ShopStackNavigation} />
       <Tab.Screen name="cart" component={CartScreen} />
+      <Tab.Screen name="favorite" component={FavoriteScreen} />
       <Tab.Screen name="profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

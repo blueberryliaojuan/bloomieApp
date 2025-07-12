@@ -82,7 +82,7 @@ function FlowerDetailScreen() {
         />
         <Image
           source={require("../assets/icons/heart.png")}
-          className="h-8 w-8"
+          className="h-8 w-8 opacity-0"
           resizeMode="contain"
         />
       </View>
@@ -123,7 +123,7 @@ function FlowerDetailScreen() {
               </View>
             );
           }}
-          keyExtractor={(item) => item.user}
+          keyExtractor={(item) => item.id}
         ></FlatList>
       </View>
       {/* CTA */}

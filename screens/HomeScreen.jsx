@@ -45,7 +45,20 @@ function HomeScreen() {
     >
       <Tab.Screen name="shop" component={ShopStackNavigation} />
       <Tab.Screen name="cart" component={CartScreen} />
-      <Tab.Screen name="favorite" component={FavoriteScreen} />
+      <Tab.Screen
+        name="favorite"
+        component={FavoriteScreen}
+        options={{
+          headerShown: true,
+
+          headerTitle: "Favorite",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#C02C26",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
       <Tab.Screen name="profile" component={ProfileScreen} />
     </Tab.Navigator>
   );

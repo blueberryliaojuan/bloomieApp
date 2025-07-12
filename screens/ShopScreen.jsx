@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import {
   Image,
@@ -26,6 +27,36 @@ function Shop() {
 
   // const filters = ["All", "Seasonal", "Occasion", "Customize"]; // Filter options
 
+  const handleToggleFavorite = async (id) => {
+    const flower = flowers.find((f) => f.id === id);
+    if (!flower) return;
+
+    const updatedFavorite = !flower.favorite;
+    try {
+      const res = await fetch(`${HOST}/flowers/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ favorite: updatedFavorite }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to update favorite");
+      }
+
+      // update state
+      setFlowers((prev) =>
+        prev.map((item) =>
+          item.id === id ? { ...item, favorite: updatedFavorite } : item
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Failed to update favorite status.");
+    }
+  };
+
   const renderCategories = ({ item }) => (
     <TouchableOpacity
       onPress={() => setActiveFilter(item)} // Update filter options on click
@@ -50,8 +81,11 @@ function Shop() {
     <FlowerCard
       image={imageMap[item.imageKey]} // Use the imageMap to get the correct image
       name={item.name}
+      id={item.id}
       price={item.price.toFixed(2)} // Format price to 2 decimal places
-      onPress={() => {
+      isFavorite={item.favorite}
+      onToggleFavorite={() => handleToggleFavorite(item.id)}
+      onClickCard={() => {
         console.log(`Clicked on ${item.name}`);
         navigation.navigate("flowerDetail", {
           name: item.name,
@@ -103,30 +137,51 @@ function Shop() {
     flowerBouquet09: require("../assets/images/flowerBouquet09.jpeg"),
   };
   // Fetch flowers data from the server
-  useEffect(() => {
-    const fetchFlowers = async () => {
-      console.log("Get all flowers list");
-      try {
-        //React Native emulators often need special handling for local servers:
-        //For iOS Simulator: http://127.0.0.1:3000/flowers works fine.
-        const response = await fetch(`${HOST}/flowers`);
-        console.log("Fetching flowers data from server...");
-        if (!response.ok) {
-          throw new Error("Failed to fetch flowers data.");
-        }
-        const data = await response.json();
-        console.log("Fetched data: ", data);
-        setFlowers(data);
-      } catch (err) {
-        console.log("Error fetching flowers data:", err);
-        setError(err.message);
-      } finally {
-        console.log("Finished fetching flowers data.");
-        setIsLoading(false);
-      }
-    };
-    fetchFlowers();
-  }, []);
+  const fetchFlowers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${HOST}/flowers`);
+      if (!response.ok) throw new Error("Failed to fetch flowers data.");
+      const data = await response.json();
+      setFlowers(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  // Refresh flowers data whenever screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      fetchFlowers();
+    }, [])
+  );
+
+  // useEffect(() => {
+  //   const fetchFlowers = async () => {
+  //     console.log("Get all flowers list");
+  //     try {
+  //       //React Native emulators often need special handling for local servers:
+  //       //For iOS Simulator: http://127.0.0.1:3000/flowers works fine.
+  //       const response = await fetch(`${HOST}/flowers`);
+  //       console.log("Fetching flowers data from server...");
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch flowers data.");
+  //       }
+  //       const data = await response.json();
+  //       console.log("Fetched data: ", data);
+  //       setFlowers(data);
+  //     } catch (err) {
+  //       console.log("Error fetching flowers data:", err);
+  //       setError(err.message);
+  //     } finally {
+  //       console.log("Finished fetching flowers data.");
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchFlowers();
+  // }, []);
 
   const fetchFlowersByName = async (name) => {
     console.log("Searching for flowers with name:", name);
@@ -165,7 +220,7 @@ function Shop() {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <View className="flex flex-row items-center justify-start mx-8">
         <Image
           source={require("../assets/flowerLogoRed.png")}
@@ -201,7 +256,7 @@ function Shop() {
           renderItem={renderCategories} // render each filter item
         ></FlatList>
       </View> */}
-      <View className="px-8 mt-5">
+      <View className="flex-1 px-8 mt-5">
         {/* <FlatList
           data={flowers}
           keyExtractor={(item) => item.id.toString()}

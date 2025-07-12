@@ -8,15 +8,22 @@
       "imageKey": "flowerBouquet01",
       "img": "img1",
       "price": 25,
-      "tags": ["flowerBouquet", "romantic", "rose", "spring"],
-      "favorite": true,
+      "tags": [
+        "flowerBouquet",
+        "romantic",
+        "rose",
+        "spring"
+      ],
+      "favorite": false,
       "reviews": [
         {
+          "id": "review-bloomie01-0",
           "user": "Alice",
           "rating": 5,
           "comment": "Absolutely stunning roses!"
         },
         {
+          "id": "review-bloomie01-1",
           "user": "Bob",
           "rating": 4,
           "comment": "Loved the colors, but some petals were a bit dry."
@@ -31,15 +38,22 @@
       "imageKey": "flowerBouquet02",
       "img": "img2",
       "price": 35,
-      "tags": ["flowerBouquet", "cheerful", "tulip", "spring"],
+      "tags": [
+        "flowerBouquet",
+        "cheerful",
+        "tulip",
+        "spring"
+      ],
       "favorite": false,
       "reviews": [
         {
+          "id": "review-bloomie02-0",
           "user": "Chris",
           "rating": 5,
           "comment": "The perfect addition to my spring table!"
         },
         {
+          "id": "review-bloomie02-1",
           "user": "Dana",
           "rating": 4,
           "comment": "Bright and cheerful, just as expected."
@@ -54,10 +68,16 @@
       "imageKey": "flowerBouquet03",
       "img": "img3",
       "price": 25,
-      "tags": ["flowerBouquet", "vibrant", "sunflower", "summer"],
+      "tags": [
+        "flowerBouquet",
+        "vibrant",
+        "sunflower",
+        "summer"
+      ],
       "favorite": true,
       "reviews": [
         {
+          "id": "review-bloomie03-0",
           "user": "Ellen",
           "rating": 4,
           "comment": "Lovely, but wish they were larger."
@@ -72,10 +92,16 @@
       "imageKey": "flowerBouquet04",
       "img": "img4",
       "price": 20,
-      "tags": ["flowerBouquet", "minimalist", "daisy", "spring"],
+      "tags": [
+        "flowerBouquet",
+        "minimalist",
+        "daisy",
+        "spring"
+      ],
       "favorite": true,
       "reviews": [
         {
+          "id": "review-bloomie04-0",
           "user": "Frank",
           "rating": 5,
           "comment": "Simple and elegant, exactly what I needed."
@@ -90,15 +116,22 @@
       "imageKey": "flowerBouquet05",
       "img": "img5",
       "price": 30,
-      "tags": ["flowerBouquet", "exotic", "orchid", "luxury"],
+      "tags": [
+        "flowerBouquet",
+        "exotic",
+        "orchid",
+        "luxury"
+      ],
       "favorite": true,
       "reviews": [
         {
+          "id": "review-bloomie05-0",
           "user": "Grace",
           "rating": 5,
           "comment": "Absolutely worth every penny!"
         },
         {
+          "id": "review-bloomie05-1",
           "user": "Hannah",
           "rating": 4,
           "comment": "Great, but a bit pricey."
@@ -113,10 +146,16 @@
       "imageKey": "flowerBouquet06",
       "img": "img6",
       "price": 40,
-      "tags": ["flowerBouquet", "sunny", "sunflower", "vivid"],
-      "favorite": false,
+      "tags": [
+        "flowerBouquet",
+        "sunny",
+        "sunflower",
+        "vivid"
+      ],
+      "favorite": true,
       "reviews": [
         {
+          "id": "review-bloomie06-0",
           "user": "Ian",
           "rating": 5,
           "comment": "Brightened my whole day!"
@@ -131,10 +170,16 @@
       "imageKey": "flowerBouquet07",
       "img": "img7",
       "price": 25,
-      "tags": ["flowerBouquet", "peaceful", "daisy", "simple"],
-      "favorite": true,
+      "tags": [
+        "flowerBouquet",
+        "peaceful",
+        "daisy",
+        "simple"
+      ],
+      "favorite": false,
       "reviews": [
         {
+          "id": "review-bloomie07-0",
           "user": "Jack",
           "rating": 4,
           "comment": "Nice, but not very unique."
@@ -149,10 +194,16 @@
       "imageKey": "flowerBouquet08",
       "img": "img8",
       "price": 35,
-      "tags": ["flowerBouquet", "mystic", "orchid", "unique"],
+      "tags": [
+        "flowerBouquet",
+        "mystic",
+        "orchid",
+        "unique"
+      ],
       "favorite": false,
       "reviews": [
         {
+          "id": "review-bloomie08-0",
           "user": "Karen",
           "rating": 5,
           "comment": "Mysterious and beautiful!"
@@ -167,10 +218,16 @@
       "imageKey": "flowerBouquet09",
       "img": "img9",
       "price": 45,
-      "tags": ["flowerBouquet", "royal", "orchid", "premium"],
+      "tags": [
+        "flowerBouquet",
+        "royal",
+        "orchid",
+        "premium"
+      ],
       "favorite": false,
       "reviews": [
         {
+          "id": "review-bloomie09-0",
           "user": "Linda",
           "rating": 5,
           "comment": "The most elegant flowers I’ve ever seen!"

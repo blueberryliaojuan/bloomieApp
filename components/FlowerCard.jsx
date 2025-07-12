@@ -1,11 +1,20 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
+import { Icon } from "@rneui/themed";
 
-function FlowerCard({ image, name, price, onPress }) {
+function FlowerCard({
+  id,
+  image,
+  name,
+  price,
+  isFavorite,
+  onToggleFavorite,
+  onClickCard,
+}) {
   return (
     <TouchableOpacity
-      onPress={onPress}
-      className="mb-8 w-[48%] self-start mr-[4%]"
+      onPress={onClickCard}
+      className="mb-8 w-[48%] self-start mr-[4%] relative"
     >
       {/* Flower Image */}
       <Image
@@ -21,6 +30,17 @@ function FlowerCard({ image, name, price, onPress }) {
         <Text className="self-end text-sm font-semibold text-gray-600 mb-4">
           ${price}
         </Text>
+      </View>
+
+      {/* Favorite Icon */}
+      <View className="w-8 h-8 absolute top-2 right-2 bg-white/50 rounded-full p-1">
+        <Icon
+          name="heart"
+          type="font-awesome" // icon type
+          color={isFavorite ? "#C02C26" : "#eeeeee"}
+          size={20}
+          onPress={() => onToggleFavorite(id)}
+        />
       </View>
     </TouchableOpacity>
   );

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
   Image,
@@ -70,6 +71,12 @@ export default function FavoriteScreen() {
       isMounted.current = false;
     };
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData(); // when the screen is focused, fetch data again
+    }, [])
+  );
 
   const handleDelete = async (id) => {
     try {

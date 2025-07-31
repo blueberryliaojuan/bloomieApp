@@ -14,7 +14,7 @@
         "rose",
         "spring"
       ],
-      "favorite": false,
+      "favorite": true,
       "reviews": [
         {
           "id": "review-bloomie01-0",
@@ -44,7 +44,7 @@
         "tulip",
         "spring"
       ],
-      "favorite": false,
+      "favorite": true,
       "reviews": [
         {
           "id": "review-bloomie02-0",
@@ -74,7 +74,7 @@
         "sunflower",
         "summer"
       ],
-      "favorite": true,
+      "favorite": false,
       "reviews": [
         {
           "id": "review-bloomie03-0",
@@ -98,7 +98,7 @@
         "daisy",
         "spring"
       ],
-      "favorite": true,
+      "favorite": false,
       "reviews": [
         {
           "id": "review-bloomie04-0",
@@ -176,7 +176,7 @@
         "daisy",
         "simple"
       ],
-      "favorite": false,
+      "favorite": true,
       "reviews": [
         {
           "id": "review-bloomie07-0",

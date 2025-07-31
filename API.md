@@ -44,7 +44,7 @@ POST http://localhost:3000/flowers
 
 PUT http://localhost:3000/flowers/1
 
-### change the favorit of id=1
+### change the favorite of id=1
 
 PATCH http://localhost:3000/flowers/1
 Content-Type: application/json

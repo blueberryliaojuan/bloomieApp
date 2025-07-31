@@ -1,0 +1,118 @@
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import Onboarding from "react-native-onboarding-swiper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Dimensions } from "react-native";
+const { width: screenWidth } = Dimensions.get("window");
+
+function OnBoardingScreen({ navigation }) {
+  const SkipButton = (props) => {
+    return (
+      <TouchableOpacity
+        {...props}
+        className="px-8 py-4 rounded-tl-[100%] rounded-bl-[100%]  bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
+      >
+        <Text className="text-white font-semibold text-base">Skip</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const NextButton = (props) => {
+    return (
+      <TouchableOpacity
+        {...props}
+        className="px-8 py-4 rounded-tr-[100%] rounded-br-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
+      >
+        <Text className="text-white font-semibold text-base">Next</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const DoneButton = ({ ...props }) => {
+    return (
+      <TouchableOpacity
+        {...props}
+        className="px-8 py-4 rounded-tr-[100%] rounded-br-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
+      >
+        <Text className="text-white font-semibold text-base">Finish</Text>
+      </TouchableOpacity>
+    );
+  };
+  return (
+    <Onboarding
+      onSkip={() => navigation.replace("home")}
+      onDone={() => navigation.replace("home")}
+      SkipButtonComponent={SkipButton}
+      NextButtonComponent={NextButton}
+      DoneButtonComponent={DoneButton}
+      bottomBarHighlight={false}
+      pages={[
+        {
+          backgroundColor: "#fff",
+          image: (
+            <View className="items-center px-6">
+              <Text className="text-5xl font-bold text-[#C02C26] mb-16 text-center">
+                Customize your Blooms
+              </Text>
+              <Image
+                source={require("../assets/images/onboarding/onboarding1.png")}
+                style={{ width: screenWidth * 0.7, height: screenWidth * 0.7 }}
+                resizeMode="contain"
+              />
+              <Text className="text-lg text-gray-600 mt-16 text-center">
+                Discover Choose flowers from a wide range of variety from our
+                special Bloom Collection flowers near you.
+              </Text>
+            </View>
+          ),
+          title: "",
+          subtitle: "",
+        },
+        {
+          backgroundColor: "#fff",
+          image: (
+            <View className="items-center px-6">
+              <Text className="text-5xl font-bold text-[#C02C26] mb-16 text-center">
+                Our florists will arrange them
+              </Text>
+              <Image
+                source={require("../assets/images/onboarding/onboarding2.png")}
+                style={{ width: screenWidth * 0.7, height: screenWidth * 0.7 }}
+                resizeMode="contain"
+              />
+              <Text className="text-lg text-gray-600 mt-16 text-center">
+                Our specially-trained flower experts handpick only the freshest
+                blooms you love most.
+              </Text>
+            </View>
+          ),
+          title: "",
+          subtitle: "",
+        },
+        {
+          backgroundColor: "#fff",
+          image: (
+            <View className="items-center px-6">
+              <Text className="text-5xl font-bold text-[#C02C26] mb-16 text-center">
+                We deliver your Bloomie
+              </Text>
+              <Image
+                source={require("../assets/images/onboarding/onboarding3.png")}
+                style={{ width: screenWidth * 0.7, height: screenWidth * 0.7 }}
+                resizeMode="contain"
+              />
+              <Text className="text-lg text-gray-600 mt-16 text-center">
+                You will receive your bouquet fresh, carefully packaged, and on
+                time!
+              </Text>
+            </View>
+          ),
+          title: "",
+          subtitle: "",
+        },
+      ]}
+    />
+  );
+}
+
+export default OnBoardingScreen;

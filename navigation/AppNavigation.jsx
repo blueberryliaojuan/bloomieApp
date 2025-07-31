@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "../screens/SplashScreen";
 import HomeScreen from "../screens/HomeScreen";
+import OnBoardingScreen from "../screens/OnBoardingScreen";
 
 import {
   setOnBoardingFlag,
@@ -33,10 +34,23 @@ function AppNavigation() {
   // if (loading) return null;
   return (
     <Stack.Navigator
-      initialRouteName={obFlag ? "home" : "splash"}
+      initialRouteName="splash"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="splash" component={SplashScreen} />
+      <Stack.Screen
+        name="onboarding"
+        component={OnBoardingScreen}
+        options={{
+          headerShown: true,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: "#C02C26",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
+
       <Stack.Screen name="home" component={HomeScreen} />
     </Stack.Navigator>
   );

@@ -65,7 +65,10 @@ function FlowerDetailScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 flex bg-white w-full max-w-[screenWidth] relative">
+    <SafeAreaView
+      className="flex-1 flex bg-white w-full  relative"
+      style={{ maxWidth: screenWidth }}
+    >
       {/* header */}
       <View className="flex flex-row items-center justify-between px-8 ">
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -110,7 +113,10 @@ function FlowerDetailScreen() {
           data={flowerData && flowerData.reviews}
           renderItem={({ item }) => {
             return (
-              <View className="mt-4 border border-[#C02C26] p-4 rounded-lg">
+              <View
+                key={item.id.toString()}
+                className="mt-4 border border-[#C02C26] p-4 rounded-lg"
+              >
                 <Text className="text-black text-sm ">{item.comment}</Text>
 
                 <Text className="text-[#C02C26] text-right">

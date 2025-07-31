@@ -17,11 +17,11 @@ export default function SuggestionCarousel({ data, imageMap, onAddFavorite }) {
   };
 
   if (!data || data.length === 0) {
-    return null; // 数据为空不渲染
+    return null; // if no data, return null
   }
 
   const renderItem = ({ item }) => (
-    <View className="relative items-center w-[200px]" key={item.id}>
+    <View key={item.id} className="relative items-center w-[200px]">
       <View className="bg-white rounded-xl shadow-md p-3 w-full">
         <TouchableOpacity
           className="absolute z-10 bottom-4 right-4"

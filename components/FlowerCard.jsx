@@ -39,7 +39,7 @@ function FlowerCard({
           type="font-awesome" // icon type
           color={isFavorite ? "#C02C26" : "#eeeeee"}
           size={20}
-          onPress={() => onToggleFavorite(id)}
+          onPress={() => onToggleFavorite()}
         />
       </View>
     </TouchableOpacity>

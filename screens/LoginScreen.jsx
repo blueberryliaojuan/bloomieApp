@@ -1,3 +1,12 @@
+/**
+ * File: LoginScreen.js
+ * Description: Login screen with form validation, login logic, and session restore.
+ *              Uses react-hook-form and yup for form handling and validation.
+ *              On successful login, navigates to home screen.
+ *              Supports guest login and navigation to sign up screen.
+ * Author: Juan Liao
+ * Created: 2025-08
+ */
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -88,7 +97,7 @@ export default function LoginScreen({ navigation }) {
         <View className="absolute inset-0 flex justify-center items-center">
           <Image
             source={require("../assets/logoWhite.png")}
-            style={{ height: 48, marginTop: -16, alignSelf: "center" }}
+            style={{ height: 48, marginTop: -16 }}
             resizeMode="contain"
           />
         </View>

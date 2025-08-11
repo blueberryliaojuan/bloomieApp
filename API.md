@@ -1,22 +1,22 @@
 ### get all:
 
-GET http://localhost:3000/flowers
+GET http://192.168.1.71:3000/flowers
 
 ### filter like
 
-GET http://localhost:3000/flowers?name_like=rose
+GET http://192.168.1.71:3000/flowers?name_like=rose
 
 ### get favorite
 
-GET http://localhost:3000/flowers?favorite=true
+GET http://192.168.1.71:3000/flowers?favorite=true
 
 ### get detail by id
 
-GET http://localhost:3000/flowers?id:1
+GET http://192.168.1.71:3000/flowers?id:1
 
 ### add flower
 
-POST http://localhost:3000/flowers
+POST http://192.168.1.71:3000/flowers
 {
 "id": "bloomie01",
 "name": "Whispers of the Rose",
@@ -42,11 +42,11 @@ POST http://localhost:3000/flowers
 
 ### revise the flower id=1
 
-PUT http://localhost:3000/flowers/1
+PUT http://192.168.1.71:3000/flowers/1
 
 ### change the favorite of id=1
 
-PATCH http://localhost:3000/flowers/1
+PATCH http://192.168.1.71:3000/flowers/1
 Content-Type: application/json
 {
 "favorite": false
@@ -54,4 +54,4 @@ Content-Type: application/json
 
 ### delete the id=1
 
-DELETE http://localhost:3000/flowers/1
+DELETE http://192.168.1.71:3000/flowers/1

@@ -40,8 +40,8 @@ function OnBoardingScreen({ navigation }) {
   };
   return (
     <Onboarding
-      onSkip={() => navigation.replace("home")}
-      onDone={() => navigation.replace("home")}
+      onSkip={() => navigation.replace("login")}
+      onDone={() => navigation.replace("login")}
       SkipButtonComponent={SkipButton}
       NextButtonComponent={NextButton}
       DoneButtonComponent={DoneButton}
@@ -56,12 +56,12 @@ function OnBoardingScreen({ navigation }) {
               </Text>
               <Image
                 source={require("../assets/images/onboarding/onboarding1.png")}
-                style={{ width: screenWidth * 0.7, height: screenWidth * 0.7 }}
+                style={{ width: screenWidth * 0.9, height: screenWidth * 0.9 }}
                 resizeMode="contain"
               />
-              <Text className="text-lg text-gray-600 mt-16 text-center">
-                Discover Choose flowers from a wide range of variety from our
-                special Bloom Collection flowers near you.
+              <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
+                Choose flowers from a wide range of variety from our special
+                Bloom Collection.
               </Text>
             </View>
           ),
@@ -77,12 +77,12 @@ function OnBoardingScreen({ navigation }) {
               </Text>
               <Image
                 source={require("../assets/images/onboarding/onboarding2.png")}
-                style={{ width: screenWidth * 0.7, height: screenWidth * 0.7 }}
+                style={{ width: screenWidth * 0.9, height: screenWidth * 0.9 }}
                 resizeMode="contain"
               />
-              <Text className="text-lg text-gray-600 mt-16 text-center">
-                Our specially-trained flower experts handpick only the freshest
-                blooms you love most.
+              <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
+                Our specially-trained flower experts handpicks only the freshest
+                blooms.
               </Text>
             </View>
           ),
@@ -98,12 +98,12 @@ function OnBoardingScreen({ navigation }) {
               </Text>
               <Image
                 source={require("../assets/images/onboarding/onboarding3.png")}
-                style={{ width: screenWidth * 0.7, height: screenWidth * 0.7 }}
+                style={{ width: screenWidth * 0.9, height: screenWidth * 0.9 }}
                 resizeMode="contain"
               />
-              <Text className="text-lg text-gray-600 mt-16 text-center">
-                You will receive your bouquet fresh, carefully packaged, and on
-                time!
+              <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
+                You will receive your Bloomie bouquet fresh, carefully packaged,
+                and well-handled.
               </Text>
             </View>
           ),

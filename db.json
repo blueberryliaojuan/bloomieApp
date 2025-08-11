@@ -1,4 +1,27 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "email": "admin@example.com"
+    },
+    {
+      "id": 2,
+      "username": "jane_doe",
+      "password": "password123",
+      "role": "user",
+      "email": "jane@example.com"
+    },
+    {
+      "id": 3,
+      "username": "john_doe",
+      "password": "mypassword",
+      "role": "user",
+      "email": "john@example.com"
+    }
+  ],
   "flowers": [
     {
       "id": "bloomie01",
@@ -8,12 +31,7 @@
       "imageKey": "flowerBouquet01",
       "img": "img1",
       "price": 25,
-      "tags": [
-        "flowerBouquet",
-        "romantic",
-        "rose",
-        "spring"
-      ],
+      "tags": ["flowerBouquet", "romantic", "rose", "spring"],
       "favorite": true,
       "reviews": [
         {
@@ -38,12 +56,7 @@
       "imageKey": "flowerBouquet02",
       "img": "img2",
       "price": 35,
-      "tags": [
-        "flowerBouquet",
-        "cheerful",
-        "tulip",
-        "spring"
-      ],
+      "tags": ["flowerBouquet", "cheerful", "tulip", "spring"],
       "favorite": true,
       "reviews": [
         {
@@ -68,13 +81,8 @@
       "imageKey": "flowerBouquet03",
       "img": "img3",
       "price": 25,
-      "tags": [
-        "flowerBouquet",
-        "vibrant",
-        "sunflower",
-        "summer"
-      ],
-      "favorite": false,
+      "tags": ["flowerBouquet", "vibrant", "sunflower", "summer"],
+      "favorite": true,
       "reviews": [
         {
           "id": "review-bloomie03-0",
@@ -92,12 +100,7 @@
       "imageKey": "flowerBouquet04",
       "img": "img4",
       "price": 20,
-      "tags": [
-        "flowerBouquet",
-        "minimalist",
-        "daisy",
-        "spring"
-      ],
+      "tags": ["flowerBouquet", "minimalist", "daisy", "spring"],
       "favorite": false,
       "reviews": [
         {
@@ -116,12 +119,7 @@
       "imageKey": "flowerBouquet05",
       "img": "img5",
       "price": 30,
-      "tags": [
-        "flowerBouquet",
-        "exotic",
-        "orchid",
-        "luxury"
-      ],
+      "tags": ["flowerBouquet", "exotic", "orchid", "luxury"],
       "favorite": true,
       "reviews": [
         {
@@ -146,12 +144,7 @@
       "imageKey": "flowerBouquet06",
       "img": "img6",
       "price": 40,
-      "tags": [
-        "flowerBouquet",
-        "sunny",
-        "sunflower",
-        "vivid"
-      ],
+      "tags": ["flowerBouquet", "sunny", "sunflower", "vivid"],
       "favorite": true,
       "reviews": [
         {
@@ -170,12 +163,7 @@
       "imageKey": "flowerBouquet07",
       "img": "img7",
       "price": 25,
-      "tags": [
-        "flowerBouquet",
-        "peaceful",
-        "daisy",
-        "simple"
-      ],
+      "tags": ["flowerBouquet", "peaceful", "daisy", "simple"],
       "favorite": true,
       "reviews": [
         {
@@ -194,12 +182,7 @@
       "imageKey": "flowerBouquet08",
       "img": "img8",
       "price": 35,
-      "tags": [
-        "flowerBouquet",
-        "mystic",
-        "orchid",
-        "unique"
-      ],
+      "tags": ["flowerBouquet", "mystic", "orchid", "unique"],
       "favorite": false,
       "reviews": [
         {
@@ -218,12 +201,7 @@
       "imageKey": "flowerBouquet09",
       "img": "img9",
       "price": 45,
-      "tags": [
-        "flowerBouquet",
-        "royal",
-        "orchid",
-        "premium"
-      ],
+      "tags": ["flowerBouquet", "royal", "orchid", "premium"],
       "favorite": false,
       "reviews": [
         {

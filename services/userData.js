@@ -1,0 +1,60 @@
+// userData.js
+
+export const USERDATA = [
+  {
+    id: 1,
+    userId: "B00000001",
+    first: "Liam",
+    last: "Anderson",
+    password: "password01",
+    email: "liam@bloomie.com",
+  },
+  {
+    id: 2,
+    userId: "B00000002",
+    first: "Sophia",
+    last: "Martinez",
+    password: "password02",
+    email: "sophia@bloomie.com",
+  },
+  {
+    id: 3,
+    userId: "B00000003",
+    first: "Noah",
+    last: "Thompson",
+    password: "password03",
+    email: "noah@bloomie.com",
+  },
+  {
+    id: 4,
+    userId: "B00000004",
+    first: "Olivia",
+    last: "Hughes",
+    password: "password04",
+    email: "olivia@bloomie.com",
+  },
+  {
+    id: 5,
+    userId: "B00000005",
+    first: "Ethan",
+    last: "Bennett",
+    password: "password05",
+    email: "ethan@bloomie.com",
+  },
+  {
+    id: 6,
+    userId: "B00000006",
+    first: "Ava",
+    last: "Mitchell",
+    password: "password06",
+    email: "ava@bloomie.com",
+  },
+  {
+    id: 7,
+    userId: "B00000007",
+    first: "Mason",
+    last: "Foster",
+    password: "password07",
+    email: "mason@bloomie.com",
+  },
+];

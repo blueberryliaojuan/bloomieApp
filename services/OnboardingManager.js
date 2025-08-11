@@ -1,22 +1,63 @@
+// onboardingManager.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
-async function setOnBoardingFlag(obFlag) {
-  try {
-    // Store the onboarding flag in AsyncStorage
-    await AsyncStorage.setItem("onboardingFlag", JSON.stringify(obFlag));
-  } catch (error) {
-    console.error("Error setting onboarding flag:", error);
-    //the screen will know it failed to set the flag
-    return false;
+
+class OnboardingManager {
+  constructor() {
+    this.completed = false;
   }
-}
-async function getOnBoardingFlag(obFlag) {
-  try {
-    // Get the onboarding flag in AsyncStorage
-    let currentFlag = await AsyncStorage.getItem("onboardingFlag");
-    return currentFlag ? JSON.parse(currentFlag) : null;
-  } catch (error) {
-    console.error("Error getting onboarding flag:", error);
+
+  /**
+   * Load onboarding flag from AsyncStorage
+   */
+  async loadFlag() {
+    try {
+      const currentFlag = await AsyncStorage.getItem("onboardingFlag");
+      this.completed = currentFlag ? JSON.parse(currentFlag) : false;
+    } catch (error) {
+      console.error("Error loading onboarding flag:", error);
+    }
+  }
+
+  /**
+   * Set onboarding completed flag
+   * @param {boolean} obFlag - true if onboarding is completed
+   */
+  async setFlag(obFlag) {
+    try {
+      await AsyncStorage.setItem("onboardingFlag", JSON.stringify(obFlag));
+      this.completed = obFlag;
+      return true;
+    } catch (error) {
+      console.error("Error setting onboarding flag:", error);
+      return false;
+    }
+  }
+
+  /**
+   * Mark onboarding as completed
+   */
+  async complete() {
+    return await this.setFlag(true);
+  }
+
+  /**
+   * Reset onboarding status
+   */
+  async reset() {
+    try {
+      await AsyncStorage.removeItem("onboardingFlag");
+      this.completed = false;
+    } catch (error) {
+      console.error("Error resetting onboarding flag:", error);
+    }
+  }
+
+  /**
+   * Check if onboarding is completed
+   */
+  isCompleted() {
+    return this.completed;
   }
 }
 
-export { setOnBoardingFlag, getOnBoardingFlag };
+export const onboardingManager = new OnboardingManager();

@@ -1,26 +1,36 @@
+/**
+ * File: SplashScreen.js
+ * Description: Shows the splash screen animation and app logo.
+ *              After 2 seconds, navigates to onboarding or login based on completion status.
+ * Author: Juan Liao
+ * Created: 2025-06
+ */
+
 import React, { useEffect } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import LottieView from "lottie-react-native";
+import { onboardingManager } from "../services/OnboardingManager.js";
+
 function SplashScreen({ navigation }) {
   useEffect(() => {
-    // Simulate a splash screen delay
-    const timer = setTimeout(() => {
-      // Navigate to the home screen after 2s
-      navigation.replace("onboarding");
-      console.log("Splash screen finished, navigate to HomeScreen");
-    }, 2000); //
+    async function checkOnboarding() {
+      await onboardingManager.loadFlag();
+      if (onboardingManager.isCompleted()) {
+        navigation.replace("login"); // Navigate to login if onboarding done
+      } else {
+        navigation.replace("onboarding"); // Otherwise navigate to onboarding
+      }
+    }
 
-    return () => clearTimeout(timer); // Cleanup the timer on unmount
+    const timer = setTimeout(() => {
+      checkOnboarding();
+    }, 2000); // Delay navigation for splash animation
+
+    return () => clearTimeout(timer); // Clear timeout on unmount
   }, [navigation]);
+
   return (
     <View className="flex-1 flex flex-col justify-center items-center bg-[#D10F17]">
-      {/* <Text> SplashComponent </Text> */}
-      {/* the Image component does not support loading SVG files directly, as it only works with static image formats like PNG and JPG  */}
-      {/* <Image
-        source={require("../assets/flowerLogoPink.png")}
-        style={{ width: 200, height: 200, alignSelf: "center" }}
-        resizeMode="contain" // Prevents the image from being cropped
-      /> */}
       <LottieView
         source={require("../assets/animations/bloomieLogo.json")}
         autoPlay
@@ -30,7 +40,7 @@ function SplashScreen({ navigation }) {
       <Image
         source={require("../assets/logoWhite.png")}
         style={{ height: 60, marginTop: 40, alignSelf: "center" }}
-        resizeMode="contain" //
+        resizeMode="contain"
       />
     </View>
   );

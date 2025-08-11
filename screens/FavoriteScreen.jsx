@@ -1,3 +1,11 @@
+/**
+ * @file FavoriteScreen.js
+ * @description Displays a list of favorite flowers and suggestions with add/remove functionality.
+ * Integrates with AsyncStorage for local caching and state persistence.
+ * @author Juan Liao
+ * @created 2025-07
+ */
+
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
@@ -11,15 +19,15 @@ import { Text, Icon, ListItem, Button } from "@rneui/themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SuggestionCarousel from "../components/SuggestionCarousel";
 
-//>>>>>>>>> for using React Native AsyncStorage
+// ======= Local Storage Helpers (AsyncStorage) =======
 import {
   setFavorites,
   getFavorites,
   addFavorite,
   removeFavorite,
 } from "../services/FavoriteManager.js";
-//>>>>>>>>> for using React Native AsyncStorage
 
+// ======= Local Image Resources =======
 const imageMap = {
   flowerBouquet01: require("../assets/images/flowerBouquet01.jpeg"),
   flowerBouquet02: require("../assets/images/flowerBouquet02.jpeg"),
@@ -32,127 +40,37 @@ const imageMap = {
   flowerBouquet09: require("../assets/images/flowerBouquet09.jpeg"),
 };
 
+// Set HOST for both iOS and Android platforms
 const HOST =
-  Platform.OS === "android" ? "http://10.0.2.2:3000" : "http://localhost:3000";
+  Platform.OS === "android"
+    ? "http://10.0.2.2:3000"
+    : "http://192.168.1.71:3000";
 
+/**
+ * @component FavoriteScreen
+ * @description Screen component for displaying and managing user's favorite flowers and suggestions.
+ */
 export default function FavoriteScreen() {
   const [favorites, setFavorites] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const isMounted = useRef(true);
+  const isMounted = useRef(true); // Used to prevent state updates on unmounted components
 
-  // const fetchFavorites = async () => {
-  //   const res = await fetch(`${HOST}/flowers?favorite=true`);
-  //   if (!res.ok) throw new Error("Failed to fetch favorites");
-  //   return res.json();
-  // };
-
-  // const fetchSuggestions = async () => {
-  //   const res = await fetch(`${HOST}/flowers?favorite=false`);
-  //   if (!res.ok) throw new Error("Failed to fetch suggestions");
-  //   return res.json();
-  // };
-
-  // const fetchData = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const [favData, sugData] = await Promise.all([
-  //       fetchFavorites(),
-  //       fetchSuggestions(),
-  //     ]);
-  //     if (isMounted.current) {
-  //       setFavorites(favData);
-  //       setSuggestions(sugData);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   } finally {
-  //     if (isMounted.current) setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   isMounted.current = true;
-  //   fetchData();
-
-  //   return () => {
-  //     isMounted.current = false;
-  //   };
-  // }, []);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     fetchData(); // when the screen is focused, fetch data again
-  //   }, [])
-  // );
-
-  // const handleDelete = async (id) => {
-  //   try {
-  //     await fetch(`${HOST}/flowers/${id}`, {
-  //       method: "PATCH",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ favorite: false }),
-  //     });
-  //     fetchData();
-  //   } catch (err) {
-  //     console.error("Failed to update favorite", err);
-  //   }
-  // };
-
-  // const handleAddFavorite = async (id) => {
-  //   try {
-  //     if (!isMounted.current) return;
-
-  //     const res = await fetch(`${HOST}/flowers/${id}`, {
-  //       method: "PATCH",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ favorite: true }),
-  //     });
-
-  //     if (!res.ok) throw new Error("Failed to update favorite");
-
-  //     await fetchData(); // fetch data again after updating
-  //   } catch (err) {
-  //     console.error(err);
-  //     Alert.alert("Error", "Failed to update favorite status.");
-  //   }
-  // };
-
-  //>>>>>>>>> for using React Native AsyncStorage
-  // Fetch favorites from API
+  /**
+   * @function fetchFlowersFromApi
+   * @description Fetches full flower list from API
+   * @returns {Promise<Array>} Array of flower objects
+   */
   const fetchFlowersFromApi = async () => {
     const res = await fetch(`${HOST}/flowers`);
     if (!res.ok) throw new Error("Failed to fetch flower list");
     return res.json();
   };
 
-  // const fetchData = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const allFlowers = await fetchFlowers();
-
-  //     //divide flowers into favorites and suggestions
-  //     const favoriteFlowers = allFlowers.filter((f) => f.favorite);
-  //     const suggestionFlowers = allFlowers.filter((f) => !f.favorite);
-
-  //     // Cache the list of favorite IDs (for offline use or component refresh upon switching).
-  //     const favoriteIds = favoriteFlowers.map((f) => f.id);
-  //     await setFavorites(favoriteIds);
-
-  //     // update state
-  //     if (isMounted.current) {
-  //       setFavorites(favoriteFlowers);
-  //       setSuggestions(suggestionFlowers);
-  //     }
-  //   } catch (err) {
-  //     console.error("fetchData error:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // Read the favorite IDs from AsyncStorage
-  // merge them with the data from the API, and refresh the state.
+  /**
+   * @function fetchFavoritesFromStorage
+   * @description Merges AsyncStorage favorite IDs with API flower list and updates state
+   */
   const fetchFavoritesFromStorage = useCallback(async () => {
     setLoading(true);
     try {
@@ -161,22 +79,19 @@ export default function FavoriteScreen() {
 
       let mergedFlowers;
       if (favoriteIds && favoriteIds.length > 0) {
-        // if there are favorite ids, merge them with the API data
+        // Merge favorite IDs from local storage into API result
         mergedFlowers = allFlowers.map((flower) => ({
           ...flower,
           favorite: favoriteIds.includes(flower.id),
         }));
       } else {
-        // if there are no favorite ids, keep the API data as is
         mergedFlowers = allFlowers;
       }
 
-      //divide flowers into favorites and suggestions
-      const favoriteFlowers = allFlowers.filter((f) => f.favorite);
-      const suggestionFlowers = allFlowers.filter((f) => !f.favorite);
+      const favoriteFlowers = mergedFlowers.filter((f) => f.favorite);
+      const suggestionFlowers = mergedFlowers.filter((f) => !f.favorite);
 
       if (isMounted.current) {
-        // setFavorites(mergedFlowers);
         setFavorites(favoriteFlowers);
         setSuggestions(suggestionFlowers);
       }
@@ -187,10 +102,14 @@ export default function FavoriteScreen() {
     }
   }, []);
 
+  /**
+   * @function handleDelete
+   * @description Removes a flower from favorites and updates UI state
+   * @param {string} id - Flower ID to remove from favorites
+   */
   const handleDelete = async (id) => {
     await removeFavorite(id);
 
-    // remove from local storage, no fetch again
     const removedItem = favorites.find((f) => f.id === id);
     if (!removedItem) return;
 
@@ -201,6 +120,11 @@ export default function FavoriteScreen() {
     setSuggestions(updatedSuggestions);
   };
 
+  /**
+   * @function handleAddFavorite
+   * @description Adds a flower to favorites and updates UI state
+   * @param {string} id - Flower ID to add to favorites
+   */
   const handleAddFavorite = async (id) => {
     await addFavorite(id);
 
@@ -214,14 +138,9 @@ export default function FavoriteScreen() {
     setSuggestions(updatedSuggestions);
   };
 
-  // useEffect(() => {
-  //   isMounted.current = true;
-  //   fetchData();
-  //   return () => {
-  //     isMounted.current = false;
-  //   };
-  // }, []);
-  // useFocusEffect保证每次聚焦都刷新
+  /**
+   * Fetch data every time the screen is focused (navigation)
+   */
   useFocusEffect(
     useCallback(() => {
       isMounted.current = true;
@@ -233,6 +152,12 @@ export default function FavoriteScreen() {
     }, [fetchFavoritesFromStorage])
   );
 
+  /**
+   * @function renderSwipeableItem
+   * @description Renders each flower item in the favorites list with swipe-to-delete
+   * @param {object} param0
+   * @returns {JSX.Element}
+   */
   const renderSwipeableItem = ({ item }) => (
     <ListItem.Swipeable
       key={item.id}
@@ -265,6 +190,7 @@ export default function FavoriteScreen() {
     </ListItem.Swipeable>
   );
 
+  // Display loading spinner while data is being fetched
   if (loading) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center">
@@ -275,7 +201,7 @@ export default function FavoriteScreen() {
 
   return (
     <SafeAreaView className="px-4 pt-2 flex-1">
-      {/* <ScrollView> */}
+      {/* Suggested flowers */}
       <Text className="text-lg font-bold mb-2 text-[#C02C26]">
         You May Be Interested
       </Text>
@@ -285,6 +211,7 @@ export default function FavoriteScreen() {
         onAddFavorite={handleAddFavorite}
       />
 
+      {/* Favorite list */}
       <Text className="text-lg font-bold mt-6 mb-2 text-[#C02C26]">
         Your Favorites
       </Text>
@@ -293,7 +220,6 @@ export default function FavoriteScreen() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderSwipeableItem}
       />
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 }

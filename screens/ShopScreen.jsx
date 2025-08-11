@@ -37,7 +37,7 @@ function Shop() {
   const HOST =
     Platform.OS === "android"
       ? "http://10.0.2.2:3000"
-      : "http://localhost:3000";
+      : "http://192.168.1.71:3000";
 
   // Fetch flowers data from the server
   // const fetchFlowersFromApi = async () => {

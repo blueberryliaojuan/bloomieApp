@@ -1,12 +1,12 @@
 import "./global.css";
 import "react-native-reanimated";
 import { NavigationContainer } from "@react-navigation/native";
-import AppNavigation from "./navigation/AppNavigation";
+import AppStackNavigation from "./navigation/AppStackNavigation";
 
 export default function App() {
   return (
     <NavigationContainer>
-      <AppNavigation />
+      <AppStackNavigation />
     </NavigationContainer>
   );
 }

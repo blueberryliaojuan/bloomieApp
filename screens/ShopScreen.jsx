@@ -290,15 +290,24 @@ function Shop() {
 
   return (
     <SafeAreaView className="flex-1">
-      <View className="flex flex-row items-center justify-start mx-8">
+      {/* <View className="flex flex-row items-center justify-start mx-8">
         <Image
           source={require("../assets/flowerLogoRed.png")}
           className="w-10 h-10  mt-4"
           resizeMode="contain"
         />
         <Text className="text-xl font-bold ml-2 mt-4">Good morning, Ella</Text>
+      </View> */}
+      {/* Header Logo */}
+      <View className="items-center pt-16 pb-4">
+        <Image
+          source={require("../assets/logoRed.png")}
+          className="h-10"
+          resizeMode="contain"
+        />
+        {/* <Text className="text-4xl font-bold text-[#C02C26]">Bloome</Text> */}
       </View>
-      <View className=" mt-5 px-8 relative">
+      <View className=" px-8 relative">
         <InputField
           placeholder="Search"
           value={searchText}

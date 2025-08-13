@@ -30,7 +30,7 @@ function SplashScreen({ navigation }) {
   }, [navigation]);
 
   return (
-    <View className="flex-1 flex flex-col justify-center items-center bg-[#D10F17]">
+    <View className="flex-1 flex flex-col justify-center items-center bg-[#C02C26]">
       <LottieView
         source={require("../assets/animations/bloomieLogo.json")}
         autoPlay

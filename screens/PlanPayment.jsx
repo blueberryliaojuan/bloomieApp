@@ -16,13 +16,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
  * Currently, it displays a placeholder "Cart" text centered on the screen.
  * @returns {JSX.Element} Cart screen layout
  */
-function Cart() {
+function PlanPayment() {
   return (
     // Container with white background and centered content
     <SafeAreaView className="flex-1 flex bg-white items-center justify-center">
-      <Text>Cart</Text>
+      <Text>Payment</Text>
     </SafeAreaView>
   );
 }
 
-export default Cart;
+export default PlanPayment;

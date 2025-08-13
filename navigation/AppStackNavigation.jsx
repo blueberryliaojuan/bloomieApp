@@ -8,7 +8,7 @@
 
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "../screens/SplashScreen";
-import HomeScreen from "../screens/HomeScreen";
+import MainScreen from "../screens/MainScreen";
 import OnBoardingScreen from "../screens/OnBoardingScreen";
 import LoginScreen from "../screens/LoginScreen";
 
@@ -32,7 +32,7 @@ function AppStackNavigation() {
         }}
       />
       <Stack.Screen name="login" component={LoginScreen} />
-      <Stack.Screen name="home" component={HomeScreen} />
+      <Stack.Screen name="main" component={MainScreen} />
     </Stack.Navigator>
   );
 }

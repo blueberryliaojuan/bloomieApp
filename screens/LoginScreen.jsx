@@ -8,6 +8,7 @@
  * Created: 2025-08
  */
 import React, { useState, useEffect } from "react";
+import { useRoute } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -36,7 +37,7 @@ const schema = yup.object({
 export default function LoginScreen({ navigation }) {
   const { user, setUser, clearUser } = useUserState();
   const [loginError, setLoginError] = useState("");
-
+  const route = useRoute();
   const {
     control,
     handleSubmit,
@@ -55,7 +56,7 @@ export default function LoginScreen({ navigation }) {
       const savedUser = await loginManager.loadSession();
       if (savedUser) {
         setUser(savedUser);
-        navigation.replace("home");
+        navigation.replace("main");
       }
     }
     restoreUser();
@@ -63,16 +64,25 @@ export default function LoginScreen({ navigation }) {
 
   const onLogin = async (data) => {
     setLoginError("");
-    console.log("data", data);
+    console.log("onLogin data", data);
     const result = await loginManager.login(data.email, data.password);
 
     if (result.success) {
       setLoginError("");
       setUser(result.user);
-      navigation.replace("home");
+      //if it's from profile page
+      if (route.params?.from === "profile") {
+        navigation.replace("profile"); // go back to Profile
+      } else {
+        navigation.replace("main");
+      }
     } else {
       setLoginError(result.message);
     }
+  };
+
+  const onLoginAsGuest = () => {
+    navigation.replace("main");
   };
 
   return (
@@ -157,7 +167,7 @@ export default function LoginScreen({ navigation }) {
           <Text className="text-white font-semibold text-lg">Log In</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSubmit(onLogin)}
+          onPress={handleSubmit(onLoginAsGuest)}
           className="border border-[#C02C26] mt-12  rounded-full py-3 px-10 items-center"
         >
           <Text className="text-[#C02C26] text-lg">Continue as guest</Text>

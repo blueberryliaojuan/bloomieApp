@@ -1,33 +1,47 @@
+/**
+ * @file HomeScreen.js
+ * @description React Native Home screen for Bloome flower subscription app.
+ *              Displays logo, hero banner, subscription options, bouquet styles,
+ *              reasons to choose Bloome, and a testimonial section.
+ * @author Juan Liao
+ * @date 2025-08
+ */
+
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import RatingStars from "../components/RatingStar";
+import RatingStars from "../components/RatingStar"; // Custom rating component
 
+// Import local bouquet images
 import classicImg from "../assets/images/home/classic.png";
 import wildflowerImg from "../assets/images/home/wild.png";
 import modernImg from "../assets/images/home/modern.png";
 
+// Map bouquet types to their corresponding images
 const bouquetImages = {
   Classic: classicImg,
   Wildflower: wildflowerImg,
   Modern: modernImg,
 };
-export default function HomeScreen() {
-  const navigation = useNavigation();
-  const [bouquetData, setBouquetData] = useState(null);
-  const [type, setType] = useState(null); // 当前选中类型
-  const [frequency, setFrequency] = useState("monthly");
 
+export default function HomeScreen() {
+  const navigation = useNavigation(); // Get navigation object
+  const [bouquetData, setBouquetData] = useState(null); // Bouquet data from API
+  const [type, setType] = useState(null); // Currently selected bouquet type
+  const [frequency, setFrequency] = useState("monthly"); // Current subscription frequency
+
+  // Fetch bouquet data from local server on component mount
   useEffect(() => {
     fetch("http://192.168.1.71:3000/bouquetData")
       .then((res) => res.json())
       .then((data) => {
         setBouquetData(data);
-        setType(Object.keys(data)[0]); // 默认第一个类型高亮
+        setType(Object.keys(data)[0]); // Default highlight first type
       })
       .catch((err) => console.error("Fetch bouquetData error:", err));
   }, []);
 
+  // Show loading state while data is being fetched
   if (!bouquetData) {
     return <Text>Loading...</Text>;
   }
@@ -51,6 +65,7 @@ export default function HomeScreen() {
             className="w-full h-60"
             resizeMode="cover"
           />
+          {/* Banner overlay with text and button */}
           <View className="absolute top-0 left-0 right-0 bottom-0 bg-black/20 justify-end p-4">
             <Text className="text-white text-lg font-semibold">
               Fresh Flowers Delivered to Your Door
@@ -58,7 +73,7 @@ export default function HomeScreen() {
             <TouchableOpacity
               className="mt-2 bg-[#C02C26] px-4 py-2 rounded-lg self-start"
               onPress={() => {
-                navigation.navigate("plan"); // 跳转并传 type
+                navigation.navigate("plan", { frequency: "weekly" });
               }}
             >
               <Text className="text-white font-semibold">Save 10% on Plan</Text>
@@ -84,7 +99,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Choose Your Style */}
+      {/* Choose Your Style Section */}
       <View className="mt-8 px-4">
         <Text className="text-lg font-bold mb-4">Choose Your Style</Text>
         <ScrollView
@@ -99,10 +114,11 @@ export default function HomeScreen() {
                 type === t ? "border-[#C02C26]" : "border-transparent"
               }`}
               onPress={() => {
-                setType(t); // 高亮当前类型
-                navigation.navigate("plan", { type: t }); // 跳转并传 type
+                setType(t); // Highlight selected card
+                navigation.navigate("plan", { type: t });
               }}
             >
+              {/* Bouquet Image */}
               <View className="items-center justify-center h-48">
                 <Image
                   source={bouquetImages[t]}
@@ -111,6 +127,7 @@ export default function HomeScreen() {
                 />
               </View>
 
+              {/* Bouquet Info */}
               <View className="p-3">
                 <View className="flex-row justify-between items-center">
                   <Text className="font-bold">{t}</Text>
@@ -122,6 +139,7 @@ export default function HomeScreen() {
                 <Text className="text-gray-500 text-sm mt-1">
                   {bouquetData[t][0].desc}
                 </Text>
+                {/* Rating Component */}
                 <View className="flex-row items-center mt-2">
                   <RatingStars
                     rating={bouquetData[t][0].rating}
@@ -134,12 +152,12 @@ export default function HomeScreen() {
         </ScrollView>
       </View>
 
-      {/* Why Choose Bloome */}
+      {/* Why Choose Bloome Section */}
       <View className="mt-6 px-4">
         <Text className="text-lg font-bold mb-4">Why Choose Bloome?</Text>
 
+        {/* Feature Card 1 */}
         <View className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center">
-          {/* <Text className="text-[#C02C26] mr-3"></Text> */}
           <Image
             source={require("../assets/icons/Package.png")}
             className="w-8 h-8 rounded-t-xl  mr-4"
@@ -151,6 +169,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* Feature Card 2 */}
         <View className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center">
           <Image
             source={require("../assets/icons/Flower.png")}
@@ -165,6 +184,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        {/* Feature Card 3 */}
         <View className="bg-white rounded-xl shadow p-4 flex-row items-center">
           <Image
             source={require("../assets/icons/CalendarCheck.png")}
@@ -180,7 +200,7 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Testimonial */}
+      {/* Testimonial Section */}
       <View className="mt-6 px-4 pb-10">
         <View className="bg-white rounded-xl shadow p-4">
           <Text className="text-yellow-500">★★★★★</Text>

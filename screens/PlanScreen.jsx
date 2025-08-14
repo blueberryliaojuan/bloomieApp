@@ -15,7 +15,7 @@ const images = {
 
 export default function PlanScreen() {
   const navigation = useNavigation();
-  const [frequency, setFrequency] = useState("Monthly");
+  const [frequency, setFrequency] = useState("Weekly");
   const [type, setType] = useState("Classic");
   const [bouquetData, setBouquetData] = useState(null);
   const [selectedBouquetId, setSelectedBouquetId] = useState(null);
@@ -83,7 +83,7 @@ export default function PlanScreen() {
                 frequency === freq ? "text-white" : "text-gray-700"
               } font-medium text-center`}
             >
-              {freq} {freq === "Monthly" ? "(Save 10%)" : ""}
+              {freq} {freq === "Weekly" ? "(Save 10%)" : ""}
             </Text>
           </TouchableOpacity>
         ))}
@@ -131,7 +131,8 @@ export default function PlanScreen() {
                 </Text>
                 <RatingStars rating={item.rating} reviews={item.reviews} />
                 <Text className="text-[#C02C26] font-bold mt-2">
-                  ${item.frequency[frequency.toLowerCase()].price} / {frequency}
+                  ${item.frequency[frequency.toLowerCase()].price} /{" "}
+                  {frequency === "monthly" ? "Month" : "Week"}
                 </Text>
               </View>
             </View>

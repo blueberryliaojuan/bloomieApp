@@ -1,12 +1,22 @@
-// PlanScreen.jsx
+/**
+ * File: PlanScreen.jsx
+ * Description: Screen component for selecting a subscription plan for bouquets.
+ *              Users can choose delivery frequency, bouquet type, and a specific bouquet.
+ * Author: Juan
+ * Date: 2025-08
+ */
+
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import RatingStars from "../components/RatingStar";
+
+// Import bouquet images
 import wildImg from "../assets/images/home/wild.png";
 import classicImg from "../assets/images/home/classic.png";
 import modernImg from "../assets/images/home/modern.png";
 
+// Map bouquet type to corresponding image
 const images = {
   Classic: classicImg,
   Wildflower: wildImg,
@@ -15,31 +25,53 @@ const images = {
 
 export default function PlanScreen() {
   const navigation = useNavigation();
-  const [frequency, setFrequency] = useState("Weekly");
-  const [type, setType] = useState("Classic");
+  const route = useRoute();
+
+  // Extract initial type and frequency from route params (if any)
+  const { type: routeType, frequency: routeFreq } = route.params || {};
+
+  // State for selected frequency, type, bouquet data, and selected bouquet
+  const [frequency, setFrequency] = useState(
+    routeFreq
+      ? routeFreq.charAt(0).toUpperCase() + routeFreq.slice(1)
+      : "Weekly"
+  );
+  const [type, setType] = useState(routeType || "Classic");
   const [bouquetData, setBouquetData] = useState(null);
   const [selectedBouquetId, setSelectedBouquetId] = useState(null);
 
+  // Update state when route params change
+  useEffect(() => {
+    if (route.params) {
+      console.log("route.params", route.params);
+      if (route.params.type) setType(route.params.type);
+      if (route.params.frequency)
+        setFrequency(
+          route.params.frequency.charAt(0).toUpperCase() +
+            route.params.frequency.slice(1)
+        );
+    }
+  }, [route.params]);
+
+  // Fetch bouquet data from local server on component mount
   useEffect(() => {
     fetch("http://192.168.1.71:3000/bouquetData")
       .then((res) => res.json())
-      .then((data) => {
-        setBouquetData(data);
-      })
+      .then((data) => setBouquetData(data))
       .catch((err) => console.error("Fetch bouquetData error:", err));
   }, []);
 
+  // Show loading if data is not yet fetched
   if (!bouquetData) {
     return <Text>Loading...</Text>;
   }
 
-  // 点击 bouquet 卡片
+  // Handle bouquet card selection
   const handleSelectBouquet = (bouquetId) => {
-    // console.log("bouquetId", bouquetId);
     setSelectedBouquetId(bouquetId);
   };
 
-  // 跳转到结算页
+  // Handle checkout button press
   const handleCheckout = () => {
     if (!selectedBouquetId) {
       alert("Please select a bouquet first");
@@ -47,11 +79,14 @@ export default function PlanScreen() {
     }
     console.log("frequency", frequency);
     console.log("selectedBouquetId", selectedBouquetId);
+
+    // Navigate to checkout screen with selected frequency and bouquetId
     navigation.navigate("planCheckout", {
       frequency,
       bouquetId: selectedBouquetId,
     });
   };
+
   return (
     <ScrollView className="flex-1 bg-white px-4">
       {/* Header Logo */}
@@ -62,11 +97,11 @@ export default function PlanScreen() {
           resizeMode="contain"
         />
       </View>
-      {/* Title */}
-      <Text className="text-xl font-bold mt-4 mb-4">Choose Your Plan</Text>
-      {/* <Text className="text-[#C02C26] mb-4">Delivery Frequency</Text> */}
 
-      {/* Frequency Buttons */}
+      {/* Page Title */}
+      <Text className="text-xl font-bold mt-4 mb-4">Choose Your Plan</Text>
+
+      {/* Frequency Selection Buttons */}
       <View className="flex-row gap-6 mt-4 px-4">
         {["Weekly", "Monthly"].map((freq) => (
           <TouchableOpacity
@@ -88,7 +123,8 @@ export default function PlanScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      {/* Type Tabs */}
+
+      {/* Bouquet Type Tabs */}
       <View className="flex-row mt-4 border-b border-gray-200">
         {["Classic", "Wildflower", "Modern"].map((t) => (
           <TouchableOpacity
@@ -103,7 +139,7 @@ export default function PlanScreen() {
             >
               {t}
             </Text>
-            {/* 下划线 */}
+            {/* Underline for selected type */}
             {type === t && (
               <View className="h-1 bg-[#C02C26] w-full mt-1 rounded-full" />
             )}
@@ -123,6 +159,7 @@ export default function PlanScreen() {
                 : "border-gray-200"
             }`}
           >
+            {/* Image and Info */}
             <View className="flex-row items-center mb-4">
               <Image source={images[type]} className="w-24 h-24 rounded-lg" />
               <View className="ml-6 flex-1">
@@ -137,6 +174,7 @@ export default function PlanScreen() {
               </View>
             </View>
 
+            {/* Bouquet Details */}
             <View className="bg-gray-100 p-2">
               <View className="flex-row justify-start items-center ">
                 <Image

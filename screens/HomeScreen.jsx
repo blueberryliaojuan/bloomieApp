@@ -23,6 +23,7 @@ const bouquetImages = {
   Wildflower: wildflowerImg,
   Modern: modernImg,
 };
+const bouquetTypes = ["Classic", "Wildflower", "Modern"];
 
 export default function HomeScreen() {
   const navigation = useNavigation(); // Get navigation object
@@ -73,7 +74,10 @@ export default function HomeScreen() {
             <TouchableOpacity
               className="mt-2 bg-[#C02C26] px-4 py-2 rounded-lg self-start"
               onPress={() => {
-                navigation.navigate("plan", { frequency: "weekly" });
+                navigation.navigate("plan", {
+                  screen: "planMain",
+                  params: { frequency: "weekly" },
+                });
               }}
             >
               <Text className="text-white font-semibold">Save 10% on Plan</Text>
@@ -107,7 +111,7 @@ export default function HomeScreen() {
           showsHorizontalScrollIndicator={false}
           className="mt-4"
         >
-          {Object.keys(bouquetData).map((t) => (
+          {bouquetTypes.map((t) => (
             <TouchableOpacity
               key={t}
               className={`bg-white rounded-xl shadow h-80 w-60 mr-4 p-4 border-2 ${
@@ -115,7 +119,10 @@ export default function HomeScreen() {
               }`}
               onPress={() => {
                 setType(t); // Highlight selected card
-                navigation.navigate("plan", { type: t });
+                navigation.navigate("plan", {
+                  screen: "planMain",
+                  params: { type: t, frequency: "monthly" },
+                });
               }}
             >
               {/* Bouquet Image */}
@@ -152,9 +159,9 @@ export default function HomeScreen() {
         </ScrollView>
       </View>
 
-      {/* Why Choose Bloome Section */}
+      {/* Why Choose Bloomie Section */}
       <View className="mt-6 px-4">
-        <Text className="text-lg font-bold mb-4">Why Choose Bloome?</Text>
+        <Text className="text-lg font-bold mb-4">Why Choose Bloomie?</Text>
 
         {/* Feature Card 1 */}
         <View className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center">
@@ -205,7 +212,7 @@ export default function HomeScreen() {
         <View className="bg-white rounded-xl shadow p-4">
           <Text className="text-yellow-500">★★★★★</Text>
           <Text className="text-gray-700 mt-2">
-            "Bloome has transformed my home! The flowers are always fresh and
+            "Bloomie has transformed my home! The flowers are always fresh and
             beautifully arranged. I love the surprise of seeing what arrives
             each week."
           </Text>

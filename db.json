@@ -213,6 +213,131 @@
       ]
     }
   ],
+  "bouquetData": {
+    "Classic": [
+      {
+        "id": "C1",
+        "size": "Small",
+        "stems": "6 - 8",
+        "arrangement": "Compact arrangement",
+        "desc": "Perfect for apartments",
+        "rating": 4.6,
+        "reviews": 126,
+        "frequency": {
+          "weekly": { "price": 28 },
+          "monthly": { "price": 32 }
+        }
+      },
+      {
+        "id": "C2",
+        "size": "Medium",
+        "stems": "10 - 12",
+        "arrangement": "Full arrangement",
+        "desc": "Perfect for dining tables",
+        "rating": 4.8,
+        "reviews": 98,
+        "frequency": {
+          "weekly": { "price": 35 },
+          "monthly": { "price": 38 }
+        }
+      },
+      {
+        "id": "C3",
+        "size": "Large",
+        "stems": "15 - 18",
+        "arrangement": "Premium arrangement",
+        "desc": "Perfect for events",
+        "rating": 4.9,
+        "reviews": 210,
+        "frequency": {
+          "weekly": { "price": 50 },
+          "monthly": { "price": 54 }
+        }
+      }
+    ],
+    "Wildflower": [
+      {
+        "id": "W1",
+        "size": "Small",
+        "stems": "6 - 8",
+        "arrangement": "Compact arrangement",
+        "desc": "Compact style",
+        "rating": 4.5,
+        "reviews": 88,
+        "frequency": {
+          "weekly": { "price": 24 },
+          "monthly": { "price": 27 }
+        }
+      },
+      {
+        "id": "W2",
+        "size": "Medium",
+        "stems": "10 - 12",
+        "arrangement": "Premium arrangement",
+        "desc": "Perfect for events",
+        "rating": 4.7,
+        "reviews": 112,
+        "frequency": {
+          "weekly": { "price": 30 },
+          "monthly": { "price": 34 }
+        }
+      },
+      {
+        "id": "W3",
+        "size": "Large",
+        "stems": "15 - 18",
+        "arrangement": "Bold arrangement",
+        "desc": "Bold design",
+        "rating": 4.8,
+        "reviews": 145,
+        "frequency": {
+          "weekly": { "price": 46 },
+          "monthly": { "price": 50 }
+        }
+      }
+    ],
+    "Modern": [
+      {
+        "id": "M1",
+        "size": "Small",
+        "stems": "6 - 8",
+        "arrangement": "Artistic arrangement",
+        "desc": "Unique textures",
+        "rating": 4.6,
+        "reviews": 76,
+        "frequency": {
+          "weekly": { "price": 34 },
+          "monthly": { "price": 38 }
+        }
+      },
+      {
+        "id": "M2",
+        "size": "Medium",
+        "stems": "8 - 10",
+        "arrangement": "Contemporary arrangement",
+        "desc": "Unique textures",
+        "rating": 4.7,
+        "reviews": 89,
+        "frequency": {
+          "weekly": { "price": 42 },
+          "monthly": { "price": 46 }
+        }
+      },
+      {
+        "id": "M3",
+        "size": "Large",
+        "stems": "12 - 14",
+        "arrangement": "Premium artistic arrangement",
+        "desc": "Event-ready",
+        "rating": 4.9,
+        "reviews": 134,
+        "frequency": {
+          "weekly": { "price": 55 },
+          "monthly": { "price": 60 }
+        }
+      }
+    ]
+  },
   "comments": [
     {
       "id": "1",

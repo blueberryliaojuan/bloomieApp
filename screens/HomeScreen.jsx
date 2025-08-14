@@ -1,8 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
-// import { ArrowRight } from "lucide-react-native"; // Icon for arrow button
+import { useNavigation } from "@react-navigation/native";
+import RatingStars from "../components/RatingStar";
 
+import classicImg from "../assets/images/home/classic.png";
+import wildflowerImg from "../assets/images/home/wild.png";
+import modernImg from "../assets/images/home/modern.png";
+
+const bouquetImages = {
+  Classic: classicImg,
+  Wildflower: wildflowerImg,
+  Modern: modernImg,
+};
 export default function HomeScreen() {
+  const navigation = useNavigation();
+  const [bouquetData, setBouquetData] = useState(null);
+  const [type, setType] = useState(null); // 当前选中类型
+  const [frequency, setFrequency] = useState("monthly");
+
+  useEffect(() => {
+    fetch("http://192.168.1.71:3000/bouquetData")
+      .then((res) => res.json())
+      .then((data) => {
+        setBouquetData(data);
+        setType(Object.keys(data)[0]); // 默认第一个类型高亮
+      })
+      .catch((err) => console.error("Fetch bouquetData error:", err));
+  }, []);
+
+  if (!bouquetData) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <ScrollView className="flex-1 bg-white">
       {/* Header Logo */}
@@ -26,14 +55,22 @@ export default function HomeScreen() {
             <Text className="text-white text-lg font-semibold">
               Fresh Flowers Delivered to Your Door
             </Text>
-            <TouchableOpacity className="mt-2 bg-[#C02C26] px-4 py-2 rounded-lg self-start">
+            <TouchableOpacity
+              className="mt-2 bg-[#C02C26] px-4 py-2 rounded-lg self-start"
+              onPress={() => {
+                navigation.navigate("plan"); // 跳转并传 type
+              }}
+            >
               <Text className="text-white font-semibold">Save 10% on Plan</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Choose Subscription Button */}
-        <TouchableOpacity className="mt-4 flex-row bg-[#C02C26] py-3 px-12 rounded-full justify-between items-center relative">
+        <TouchableOpacity
+          className="mt-4 flex-row bg-[#C02C26] py-3 px-12 rounded-full justify-between items-center relative"
+          onPress={() => navigation.navigate("plan")}
+        >
           <Text className="text-white font-semibold text-lg">
             Choose Your Subscription
           </Text>
@@ -50,87 +87,50 @@ export default function HomeScreen() {
       {/* Choose Your Style */}
       <View className="mt-8 px-4">
         <Text className="text-lg font-bold mb-4">Choose Your Style</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {/* Wildflower Card */}
-          <View className="bg-white rounded-xl shadow h-80 w-60 mr-4 p-4">
-            <View className="items-center justify-center h-48">
-              <Image
-                source={require("../assets/images/home/wild.png")}
-                className=" h-40 rounded-lg"
-                resizeMode="contain"
-              />
-            </View>
-
-            <View className="p-3">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold">Wildflower</Text>
-                <Text className="text-[#C02C26] font-bold">$28</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          className="mt-4"
+        >
+          {Object.keys(bouquetData).map((t) => (
+            <TouchableOpacity
+              key={t}
+              className={`bg-white rounded-xl shadow h-80 w-60 mr-4 p-4 border-2 ${
+                type === t ? "border-[#C02C26]" : "border-transparent"
+              }`}
+              onPress={() => {
+                setType(t); // 高亮当前类型
+                navigation.navigate("plan", { type: t }); // 跳转并传 type
+              }}
+            >
+              <View className="items-center justify-center h-48">
+                <Image
+                  source={bouquetImages[t]}
+                  className="h-40 rounded-lg"
+                  resizeMode="contain"
+                />
               </View>
-              <Text className="text-gray-500 text-sm mt-1">
-                Natural beauty with mixed field flowers
-              </Text>
-              <View className="flex-row items-center mt-2">
-                <Text className="text-yellow-500">★★★★★</Text>
-                <Text className="text-gray-500 text-sm ml-1">
-                  4.6 (126 Review)
+
+              <View className="p-3">
+                <View className="flex-row justify-between items-center">
+                  <Text className="font-bold">{t}</Text>
+                  <Text className="text-[#C02C26] font-bold">
+                    ${bouquetData[t][0].frequency[frequency].price}/
+                    {frequency === "monthly" ? "Month" : "Week"}
+                  </Text>
+                </View>
+                <Text className="text-gray-500 text-sm mt-1">
+                  {bouquetData[t][0].desc}
                 </Text>
+                <View className="flex-row items-center mt-2">
+                  <RatingStars
+                    rating={bouquetData[t][0].rating}
+                    reviews={bouquetData[t][0].reviews}
+                  />
+                </View>
               </View>
-            </View>
-          </View>
-
-          {/* Classic Card */}
-
-          <View className="bg-white rounded-xl shadow h-80 w-60 mr-4 p-4">
-            <View className="items-center justify-center h-48">
-              <Image
-                source={require("../assets/images/home/classic.png")}
-                className=" h-40 rounded-lg"
-                resizeMode="contain"
-              />
-            </View>
-            <View className="p-3">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold">Classic</Text>
-                <Text className="text-[#C02C26] font-bold">$30</Text>
-              </View>
-              <Text className="text-gray-500 text-sm mt-1">
-                Timeless elegance with seasonal blooms
-              </Text>
-              <View className="flex-row items-center mt-2">
-                <Text className="text-yellow-500">★★★★★</Text>
-                <Text className="text-gray-500 text-sm ml-1">
-                  4.8 (200 Review)
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {/* Morden Card */}
-
-          <View className="bg-white rounded-xl shadow h-80 w-60 mr-4 p-4">
-            <View className="items-center justify-center h-48">
-              <Image
-                source={require("../assets/images/home/modern.png")}
-                className=" h-40 rounded-lg"
-                resizeMode="contain"
-              />
-            </View>
-            <View className="p-3">
-              <View className="flex-row justify-between items-center">
-                <Text className="font-bold">Classic</Text>
-                <Text className="text-[#C02C26] font-bold">$30</Text>
-              </View>
-              <Text className="text-gray-500 text-sm mt-1">
-                Timeless elegance with seasonal blooms
-              </Text>
-              <View className="flex-row items-center mt-2">
-                <Text className="text-yellow-500">★★★★★</Text>
-                <Text className="text-gray-500 text-sm ml-1">
-                  4.8 (200 Review)
-                </Text>
-              </View>
-            </View>
-          </View>
+            </TouchableOpacity>
+          ))}
         </ScrollView>
       </View>
 

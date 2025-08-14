@@ -1,111 +1,11 @@
 // PlanScreen.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import RatingStars from "../components/RatingStar";
 import wildImg from "../assets/images/home/wild.png";
 import classicImg from "../assets/images/home/classic.png";
 import modernImg from "../assets/images/home/modern.png";
-
-import { useNavigation } from "@react-navigation/native";
-
-const bouquetData = {
-  Classic: [
-    {
-      id: "C1",
-      size: "Small",
-      price: 28,
-      stems: "6 - 8",
-      arrangement: "Compact arrangement",
-      desc: "Perfect for apartments",
-      rating: 4.6,
-      reviews: 126,
-    },
-    {
-      id: "C2",
-      size: "Medium",
-      price: 35,
-      stems: "10 - 12",
-      arrangement: "Full arrangement",
-      desc: "Perfect for dining tables",
-      rating: 4.8,
-      reviews: 98,
-    },
-    {
-      id: "C3",
-      size: "Large",
-      price: 50,
-      stems: "15 - 18",
-      arrangement: "Premium arrangement",
-      desc: "Perfect for events",
-      rating: 4.9,
-      reviews: 210,
-    },
-  ],
-  Wildflower: [
-    {
-      id: "W1",
-      size: "Small",
-      price: 24,
-      stems: "6 - 8",
-      arrangement: "Compact arrangement",
-      desc: "Compact style",
-      rating: 4.5,
-      reviews: 88,
-    },
-    {
-      id: "W2",
-      size: "Medium",
-      price: 30,
-      stems: "10 - 12",
-      arrangement: "Premium arrangement",
-      desc: "Perfect for events",
-      rating: 4.7,
-      reviews: 112,
-    },
-    {
-      id: "W3",
-      size: "Large",
-      price: 46,
-      stems: "15 - 18",
-      arrangement: "Bold arrangement",
-      desc: "Bold design",
-      rating: 4.8,
-      reviews: 145,
-    },
-  ],
-  Modern: [
-    {
-      id: "M1",
-      size: "Small",
-      price: 34,
-      stems: "6 - 8",
-      arrangement: "Artistic arrangement",
-      desc: "Unique textures",
-      rating: 4.6,
-      reviews: 76,
-    },
-    {
-      id: "M2",
-      size: "Medium",
-      price: 42,
-      stems: "8 - 10",
-      arrangement: "Contemporary arrangement",
-      desc: "Unique textures",
-      rating: 4.7,
-      reviews: 89,
-    },
-    {
-      id: "M3",
-      size: "Large",
-      price: 55,
-      stems: "12 - 14",
-      arrangement: "Premium artistic arrangement",
-      desc: "Event-ready",
-      rating: 4.9,
-      reviews: 134,
-    },
-  ],
-};
 
 const images = {
   Classic: classicImg,
@@ -117,7 +17,22 @@ export default function PlanScreen() {
   const navigation = useNavigation();
   const [frequency, setFrequency] = useState("Monthly");
   const [type, setType] = useState("Classic");
+  const [bouquetData, setBouquetData] = useState(null);
   const [selectedBouquetId, setSelectedBouquetId] = useState(null);
+
+  useEffect(() => {
+    fetch("http://192.168.1.71:3000/bouquetData")
+      .then((res) => res.json())
+      .then((data) => {
+        setBouquetData(data);
+      })
+      .catch((err) => console.error("Fetch bouquetData error:", err));
+  }, []);
+
+  if (!bouquetData) {
+    return <Text>Loading...</Text>;
+  }
+
   // 点击 bouquet 卡片
   const handleSelectBouquet = (bouquetId) => {
     // console.log("bouquetId", bouquetId);
@@ -173,6 +88,28 @@ export default function PlanScreen() {
           </TouchableOpacity>
         ))}
       </View>
+      {/* Type Tabs */}
+      <View className="flex-row mt-4 border-b border-gray-200">
+        {["Classic", "Wildflower", "Modern"].map((t) => (
+          <TouchableOpacity
+            key={t}
+            className="flex-1 py-3 items-center"
+            onPress={() => setType(t)}
+          >
+            <Text
+              className={`font-medium ${
+                type === t ? "text-[#C02C26]" : "text-gray-500"
+              }`}
+            >
+              {t}
+            </Text>
+            {/* 下划线 */}
+            {type === t && (
+              <View className="h-1 bg-[#C02C26] w-full mt-1 rounded-full" />
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
 
       {/* Bouquet Cards */}
       <View className="mt-4">
@@ -194,7 +131,7 @@ export default function PlanScreen() {
                 </Text>
                 <RatingStars rating={item.rating} reviews={item.reviews} />
                 <Text className="text-[#C02C26] font-bold mt-2">
-                  ${item.price} / {frequency}
+                  ${item.frequency[frequency.toLowerCase()].price} / {frequency}
                 </Text>
               </View>
             </View>

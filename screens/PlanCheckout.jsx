@@ -1,4 +1,12 @@
-import React, { useState } from "react";
+/**
+ * @file PlanPayment.jsx
+ * @description Payment page for Bloome flower subscription app.
+ *              Displays order summary, address form, payment inputs, and subscription button.
+ * @author Juan Liao
+ * @date 2025-08
+ */
+
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,16 +16,28 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-// import { ChevronLeftIcon } from "react-native-heroicons/outline"; // 你也可以用自己图标库或者图片代替
+
+// Import bouquet images
+import wildImg from "../assets/images/home/wild.png";
+import classicImg from "../assets/images/home/classic.png";
+import modernImg from "../assets/images/home/modern.png";
+
+// Map bouquet type to corresponding image
+const images = {
+  Classic: classicImg,
+  Wildflower: wildImg,
+  Modern: modernImg,
+};
 
 export default function PlanPayment() {
   const navigation = useNavigation();
   const route = useRoute();
+  const { bouquetId, frequency, type } = route.params;
 
-  // 假设从上个页面传来的参数里有 bouquet info 和 frequency
-  const { bouquetId, frequency } = route.params;
+  const [plan, setPlan] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 简单state
+  // Address & Payment states
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zip, setZip] = useState("");
@@ -26,12 +46,50 @@ export default function PlanPayment() {
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
 
-  // 订阅按钮事件
+  // Fetch plan data
+  useEffect(() => {
+    const fetchPlan = async () => {
+      try {
+        // console.log("route.params", route.params);
+        const response = await fetch("http://192.168.1.71:3000/bouquetData");
+        const data = await response.json();
+        // console.log("data", data);
+        // 直接用 type 从 params 筛选 plan
+        const bouquetType = type; // 从 params 拿到 type
+
+        const planItem = data[bouquetType].find(
+          (item) => item.id === bouquetId
+        );
+
+        if (planItem) {
+          setPlan({ ...planItem, type: bouquetType }); // 添加 type 属性
+        } else {
+          setPlan(null); // 没找到 plan
+        }
+      } catch (err) {
+        console.error("Error fetching plan:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlan();
+  }, [bouquetId]);
+
+  // Subscribe button
   const handleSubscribe = () => {
-    // 支付逻辑
-    alert("Subscription submitted!");
+    navigation.navigate("profile", {
+      // Tab 名称
+      screen: "mySubscription", // Stack 内的 screen
+      params: {
+        frequency,
+        bouquetId: plan.id,
+        type,
+      },
+    });
   };
 
+  // Modify plan
   const handleModify = () => {
     navigation.navigate("modifyPlan", {
       frequency,
@@ -39,19 +97,29 @@ export default function PlanPayment() {
     });
   };
 
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text>Loading plan...</Text>
+      </View>
+    );
+  }
+
+  if (!plan) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text>Plan not found</Text>
+      </View>
+    );
+  }
+
+  const frequencyLower = frequency.toLowerCase();
+  const planPrice = plan.frequency[frequencyLower]?.price ?? 0;
+  const frequencyLabel = frequencyLower === "monthly" ? "Month" : "Week";
+
   return (
     <View className="flex-1 bg-white">
-      {/* Header */}
-      <View className="flex-row items-center px-4 pt-14 pb-4 border-b border-gray-200">
-        <TouchableOpacity onPress={handleModify}>
-          <Text className="text-red-600 text-2xl">{"<"} </Text>
-          <Text className="text-black font-bold text-lg ml-2">
-            Modify Subscription11
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView className="px-4">
+      <ScrollView className="px-4" keyboardShouldPersistTaps="handled">
         {/* Order Summary */}
         <Text className="text-black font-bold text-base mt-4 mb-2">
           Order Summary
@@ -59,25 +127,25 @@ export default function PlanPayment() {
 
         <View className="flex-row items-center bg-white border-b border-gray-300 pb-4 mb-4">
           <Image
-            source={require("../assets/images/home/modern.png")}
-            className="h-4"
+            source={images[plan.type]}
+            className="h-40 w-40 rounded-lg"
             resizeMode="contain"
           />
           <View className="ml-4 flex-1">
             <Text className="text-black font-semibold text-lg">
-              {/* {bouquet.type} - {bouquet.size} */}
+              {plan.type} Bouquet
             </Text>
             <Text className="text-gray-500">
-              Fresh flowers delivered {frequency.toLowerCase()}
+              Fresh flowers delivered {frequencyLower}
             </Text>
             <Text className="text-black font-bold text-lg mt-2">
-              {/* ${bouquet.price} / {frequency} */}
+              ${planPrice} / {frequencyLabel}
             </Text>
           </View>
         </View>
 
         {/* Address Form */}
-        <Text className="text-black font-bold text-base mb-2">
+        <Text className="text-black font-bold text-base mb-2 mt-8">
           Street Address
         </Text>
         <TextInput
@@ -87,23 +155,24 @@ export default function PlanPayment() {
           className="border border-gray-300 rounded-md px-3 py-2 mb-4"
         />
 
-        <View className="flex-row space-x-4">
+        <View className="flex-row">
           <TextInput
             value={city}
             onChangeText={setCity}
             placeholder="City"
             className="flex-1 border border-gray-300 rounded-md px-3 py-2 mb-4"
+            style={{ marginRight: "4px" }}
           />
           <TextInput
             value={zip}
             onChangeText={setZip}
             placeholder="ZIP Code"
-            className="w-24 border border-gray-300 rounded-md px-3 py-2 mb-4"
+            className="w-24 border border-gray-300 rounded-md px-3 py-2 mb-4 ml-4"
           />
         </View>
 
         {/* Payment Method */}
-        <Text className="text-black font-bold text-base mb-2">
+        <Text className="text-black font-bold text-base mb-2 mt-8">
           Payment Method
         </Text>
 
@@ -111,7 +180,7 @@ export default function PlanPayment() {
           value={cardName}
           onChangeText={setCardName}
           placeholder="Cardholder Name"
-          className="border border-gray-300 rounded-md px-3 py-2 mb-4"
+          className="border border-gray-300 rounded-md px-3 py-2 mb-4 "
         />
         <TextInput
           value={cardNumber}
@@ -133,35 +202,34 @@ export default function PlanPayment() {
             onChangeText={setCvv}
             placeholder="CVV"
             keyboardType="numeric"
-            className="w-24 border border-gray-300 rounded-md px-3 py-2 mb-4"
+            className="w-24 border border-gray-300 rounded-md px-3 py-2 mb-4 ml-4"
           />
         </View>
 
         {/* Security info */}
-        <View className="bg-gray-100 p-4 rounded-md mb-28">
+        <View className="bg-gray-100 p-4 rounded-md mb-12">
           <Text className="text-gray-600 text-sm">
             Your payment information is secure and encrypted
           </Text>
         </View>
+
+        {/* Subscribe Button */}
+        <TouchableOpacity
+          onPress={handleSubscribe}
+          className="mt-4 mb-8 flex-row bg-[#C02C26] py-3 px-12 rounded-full justify-between items-center relative"
+        >
+          <Text className="text-white font-semibold text-lg">
+            Subscribe For ${planPrice}/{frequencyLabel}
+          </Text>
+          <View className="absolute right-0 h-14 w-14 rounded-full bg-[#ECBDC9] items-center justify-center">
+            <Image
+              source={require("../assets/icons/ArrowUpRight.png")}
+              className="h-6 w-6"
+              resizeMode="contain"
+            />
+          </View>
+        </TouchableOpacity>
       </ScrollView>
-
-      {/* Subscribe Button */}
-
-      <TouchableOpacity
-        onPress={handleSubscribe}
-        className="mt-4 mb-8 flex-row bg-[#C02C26] py-3 px-12 rounded-full justify-between items-center relative"
-      >
-        <Text className="text-white font-semibold text-lg">
-          Subscribe For $35/Weekly
-        </Text>
-        <View className="absolute right-0 h-14 w-14 rounded-full bg-[#ECBDC9] items-center justify-center">
-          <Image
-            source={require("../assets/icons/ArrowUpRight.png")}
-            className="h-6 w-6"
-            resizeMode="contain"
-          />
-        </View>
-      </TouchableOpacity>
     </View>
   );
 }

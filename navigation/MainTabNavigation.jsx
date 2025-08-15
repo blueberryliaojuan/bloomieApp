@@ -54,19 +54,7 @@ export default function MainTabNavigator() {
       <Tab.Screen name="home" component={HomeScreen} />
       <Tab.Screen name="plan" component={PlanStackNavigation} />
       <Tab.Screen name="shop" component={ShopStackNavigation} />
-      <Tab.Screen
-        name="profile"
-        component={ProfileStackNavigation}
-        options={{
-          headerShown: true,
-          headerTitle: "Profile",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#C02C26",
-          },
-          headerTintColor: "#fff",
-        }}
-      />
+      <Tab.Screen name="profile" component={ProfileStackNavigation} />
     </Tab.Navigator>
   );
 }

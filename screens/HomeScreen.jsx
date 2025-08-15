@@ -36,6 +36,7 @@ export default function HomeScreen() {
     fetch("http://192.168.1.71:3000/bouquetData")
       .then((res) => res.json())
       .then((data) => {
+        console.log("data", data);
         setBouquetData(data);
         setType(Object.keys(data)[0]); // Default highlight first type
       })

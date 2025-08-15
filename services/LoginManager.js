@@ -1,15 +1,14 @@
 // loginManager.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USERDATA } from "./userData.js";
+
+const API_URL = "http://192.168.1.71:3000/users"; // 或你 json-server 的地址
 
 class LoginManager {
   constructor() {
     this.currentUser = null;
   }
 
-  /**
-   * Load saved user session from AsyncStorage
-   */
+  /** Load saved user session from AsyncStorage */
   async loadSession() {
     try {
       const savedUser = await AsyncStorage.getItem("bloomieUser");
@@ -22,23 +21,31 @@ class LoginManager {
   }
 
   /**
-   * Authenticate user credentials against USERDATA
-   * @param {string} email - The user ID
-   * @param {string} password - The password
-   * @returns {object|false} - User object if valid, false otherwise
+   * Authenticate user credentials against JSON server
+   * @param {string} email
+   * @param {string} password
+   * @returns {object|false} User object if valid, false otherwise
    */
-  authenticate(email, password) {
-    const user = USERDATA.find((u) => u.email === email);
-    if (!user) return false; // No matching email
-    if (user.password !== password) return false; // Wrong password
-    return user; // Valid credentials
+  async authenticate(email, password) {
+    try {
+      const response = await fetch(API_URL);
+      // console.log("response", response);
+      if (!response.ok) throw new Error("Failed to fetch users");
+      const users = await response.json();
+
+      const user = users.find((u) => u.email === email);
+      if (!user) return false; // email not found
+      if (user.password !== password) return false; // wrong password
+      return user;
+    } catch (error) {
+      console.error("Authentication error:", error);
+      return false;
+    }
   }
 
-  /**
-   * Login method
-   */
+  /** Login method */
   async login(email, password) {
-    const user = this.authenticate(email, password);
+    const user = await this.authenticate(email, password);
 
     if (!user) {
       return { success: false, message: "Invalid email or password" };
@@ -63,9 +70,7 @@ class LoginManager {
     };
   }
 
-  /**
-   * Logout method
-   */
+  /** Logout method */
   async logout() {
     this.currentUser = null;
     try {
@@ -76,16 +81,12 @@ class LoginManager {
     return { success: true, message: "Logged out" };
   }
 
-  /**
-   * Check login status
-   */
+  /** Check login status */
   isLoggedIn() {
     return this.currentUser !== null;
   }
 
-  /**
-   * Get current logged-in user info
-   */
+  /** Get current logged-in user info */
   getCurrentUser() {
     return this.currentUser;
   }

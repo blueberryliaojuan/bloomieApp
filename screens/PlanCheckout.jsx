@@ -2,7 +2,8 @@
  * @file PlanPayment.jsx
  * @description Payment page for Bloome flower subscription app.
  *              Displays order summary, address form, payment inputs, and subscription button.
- * @author Juan Liao
+ *              Uses react-hook-form + yup for validation, stores data to JSON Server, and associates subscription with logged-in user.
+ * @author Juan
  * @date 2025-08
  */
 
@@ -16,8 +17,12 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { loginManager } from "../services/LoginManager.js"; // 导入登录管理器
 
-// Import bouquet images
+// Bouquet images
 import wildImg from "../assets/images/home/wild.png";
 import classicImg from "../assets/images/home/classic.png";
 import modernImg from "../assets/images/home/modern.png";
@@ -29,6 +34,29 @@ const images = {
   Modern: modernImg,
 };
 
+// Yup schema
+const schema = yup.object().shape({
+  address: yup.string().required("Street Address is required"),
+  city: yup.string().required("City is required"),
+  zip: yup
+    .string()
+    .matches(/^[A-Za-z0-9]{6}$/, "ZIP Code must be 6 alphanumeric characters")
+    .required("ZIP Code is required"),
+  cardName: yup.string().required("Cardholder Name is required"),
+  cardNumber: yup
+    .string()
+    .matches(/^\d{16}$/, "Card Number must be 16 digits")
+    .required("Card Number is required"),
+  expiry: yup
+    .string()
+    .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiry must be MM/YY")
+    .required("Expiry date is required"),
+  cvv: yup
+    .string()
+    .matches(/^\d{3}$/, "CVV must be 3 digits")
+    .required("CVV is required"),
+});
+
 export default function PlanPayment() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -37,34 +65,28 @@ export default function PlanPayment() {
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Address & Payment states
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [zip, setZip] = useState("");
-  const [cardName, setCardName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvv, setCvv] = useState("");
+  // react-hook-form setup
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   // Fetch plan data
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        // console.log("route.params", route.params);
         const response = await fetch("http://192.168.1.71:3000/bouquetData");
         const data = await response.json();
-        // console.log("data", data);
-        // 直接用 type 从 params 筛选 plan
-        const bouquetType = type; // 从 params 拿到 type
-
-        const planItem = data[bouquetType].find(
-          (item) => item.id === bouquetId
-        );
+        const planItem = data[type]?.find((item) => item.id === bouquetId);
 
         if (planItem) {
-          setPlan({ ...planItem, type: bouquetType }); // 添加 type 属性
+          setPlan({ ...planItem, type });
         } else {
-          setPlan(null); // 没找到 plan
+          setPlan(null);
         }
       } catch (err) {
         console.error("Error fetching plan:", err);
@@ -74,29 +96,72 @@ export default function PlanPayment() {
     };
 
     fetchPlan();
-  }, [bouquetId]);
+  }, [bouquetId, type]);
 
-  // Subscribe button
-  const handleSubscribe = () => {
-    navigation.navigate("profile", {
-      // Tab 名称
-      screen: "mySubscription", // Stack 内的 screen
-      params: {
-        frequency,
-        bouquetId: plan.id,
-        type,
-      },
-    });
-  };
+  // Submit form
+  const onSubmit = async (formData) => {
+    const currentUser = loginManager.getCurrentUser();
 
-  // Modify plan
-  const handleModify = () => {
-    navigation.navigate("modifyPlan", {
+    if (!currentUser) {
+      alert("You must be logged in to subscribe.");
+      return;
+    }
+
+    // 计算下一次送货日期（示例：按frequency计算）
+    const now = new Date();
+    let nextDelivery = new Date();
+    if (frequency.toLowerCase() === "monthly") {
+      nextDelivery.setMonth(now.getMonth() + 1);
+    } else {
+      nextDelivery.setDate(now.getDate() + 7);
+    }
+    const nextDeliveryStr = nextDelivery.toISOString().split("T")[0];
+
+    const newSubscription = {
+      userId: currentUser.id,
+      bouquetId: plan.id,
+      bouquetName: `${plan.type} Bouquet`,
+      type: plan.type,
       frequency,
-      bouquetId,
-    });
-  };
+      price: plan.frequency[frequency.toLowerCase()]?.price ?? 0,
+      status: "active",
+      address: formData.address,
+      city: formData.city,
+      zip: formData.zip,
+      cardNumber: formData.cardNumber,
+      nextDelivery: nextDeliveryStr,
+      upcomingDeliveries: [
+        {
+          date: nextDeliveryStr,
+          name: `${plan.type} Bouquet`,
+          status: "confirmed",
+        },
+      ],
+    };
 
+    console.log("newSubscription", newSubscription);
+
+    try {
+      await fetch("http://192.168.1.71:3000/subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newSubscription),
+      });
+
+      // Reset form and navigate
+      reset();
+      navigation.navigate("profile", {
+        screen: "mySubscription",
+        params: {
+          frequency,
+          bouquetId: plan.id,
+          type,
+        },
+      });
+    } catch (err) {
+      console.error("Error saving subscription:", err);
+    }
+  };
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center">
@@ -125,7 +190,7 @@ export default function PlanPayment() {
           Order Summary
         </Text>
 
-        <View className="flex-row items-center bg-white border-b border-gray-300 pb-4 mb-4">
+        <View className="flex-row items-center border-b border-gray-300 pb-4 mb-4">
           <Image
             source={images[plan.type]}
             className="h-40 w-40 rounded-lg"
@@ -144,66 +209,154 @@ export default function PlanPayment() {
           </View>
         </View>
 
-        {/* Address Form */}
+        {/* Address */}
         <Text className="text-black font-bold text-base mb-2 mt-8">
           Street Address
         </Text>
-        <TextInput
-          value={address}
-          onChangeText={setAddress}
-          placeholder="Street Address"
-          className="border border-gray-300 rounded-md px-3 py-2 mb-4"
+        <Controller
+          control={control}
+          name="address"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              value={value}
+              onChangeText={onChange}
+              placeholder="Street Address"
+              className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+            />
+          )}
         />
+        {errors.address && (
+          <Text className="text-red-500 text-sm mb-3">
+            {errors.address.message}
+          </Text>
+        )}
 
         <View className="flex-row">
-          <TextInput
-            value={city}
-            onChangeText={setCity}
-            placeholder="City"
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 mb-4"
-            style={{ marginRight: "4px" }}
-          />
-          <TextInput
-            value={zip}
-            onChangeText={setZip}
-            placeholder="ZIP Code"
-            className="w-24 border border-gray-300 rounded-md px-3 py-2 mb-4 ml-4"
-          />
+          <View className="flex-1 mr-2">
+            <Controller
+              control={control}
+              name="city"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="City"
+                  className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+                />
+              )}
+            />
+            {errors.city && (
+              <Text className="text-red-500 text-sm mb-3">
+                {errors.city.message}
+              </Text>
+            )}
+          </View>
+
+          <View className="w-24">
+            <Controller
+              control={control}
+              name="zip"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="ZIP"
+                  keyboardType="default"
+                  className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+                />
+              )}
+            />
+            {errors.zip && (
+              <Text className="text-red-500 text-sm mb-3">
+                {errors.zip.message}
+              </Text>
+            )}
+          </View>
         </View>
 
-        {/* Payment Method */}
+        {/* Payment */}
         <Text className="text-black font-bold text-base mb-2 mt-8">
           Payment Method
         </Text>
 
-        <TextInput
-          value={cardName}
-          onChangeText={setCardName}
-          placeholder="Cardholder Name"
-          className="border border-gray-300 rounded-md px-3 py-2 mb-4 "
+        <Controller
+          control={control}
+          name="cardName"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              value={value}
+              onChangeText={onChange}
+              placeholder="Cardholder Name"
+              className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+            />
+          )}
         />
-        <TextInput
-          value={cardNumber}
-          onChangeText={setCardNumber}
-          placeholder="Card Number"
-          keyboardType="numeric"
-          className="border border-gray-300 rounded-md px-3 py-2 mb-4"
+        {errors.cardName && (
+          <Text className="text-red-500 text-sm mb-3">
+            {errors.cardName.message}
+          </Text>
+        )}
+
+        <Controller
+          control={control}
+          name="cardNumber"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              value={value}
+              onChangeText={onChange}
+              placeholder="Card Number"
+              keyboardType="numeric"
+              className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+            />
+          )}
         />
+        {errors.cardNumber && (
+          <Text className="text-red-500 text-sm mb-3">
+            {errors.cardNumber.message}
+          </Text>
+        )}
 
         <View className="flex-row space-x-4">
-          <TextInput
-            value={expiry}
-            onChangeText={setExpiry}
-            placeholder="Expiry Date"
-            className="flex-1 border border-gray-300 rounded-md px-3 py-2 mb-4"
-          />
-          <TextInput
-            value={cvv}
-            onChangeText={setCvv}
-            placeholder="CVV"
-            keyboardType="numeric"
-            className="w-24 border border-gray-300 rounded-md px-3 py-2 mb-4 ml-4"
-          />
+          <View className="flex-1">
+            <Controller
+              control={control}
+              name="expiry"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="MM/YY"
+                  className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+                />
+              )}
+            />
+            {errors.expiry && (
+              <Text className="text-red-500 text-sm mb-3">
+                {errors.expiry.message}
+              </Text>
+            )}
+          </View>
+
+          <View className="w-24">
+            <Controller
+              control={control}
+              name="cvv"
+              render={({ field: { onChange, value } }) => (
+                <TextInput
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder="CVV"
+                  keyboardType="numeric"
+                  className="border border-gray-300 rounded-md px-3 py-2 mb-1"
+                />
+              )}
+            />
+            {errors.cvv && (
+              <Text className="text-red-500 text-sm mb-3">
+                {errors.cvv.message}
+              </Text>
+            )}
+          </View>
         </View>
 
         {/* Security info */}
@@ -215,7 +368,7 @@ export default function PlanPayment() {
 
         {/* Subscribe Button */}
         <TouchableOpacity
-          onPress={handleSubscribe}
+          onPress={handleSubmit(onSubmit)}
           className="mt-4 mb-8 flex-row bg-[#C02C26] py-3 px-12 rounded-full justify-between items-center relative"
         >
           <Text className="text-white font-semibold text-lg">

@@ -2,24 +2,59 @@
   "users": [
     {
       "id": 1,
-      "username": "admin",
-      "password": "admin123",
-      "role": "admin",
-      "email": "admin@example.com"
+      "userId": "B00000001",
+      "first": "Liam",
+      "last": "Anderson",
+      "password": "password01",
+      "email": "liam@bloomie.com"
     },
     {
       "id": 2,
-      "username": "jane_doe",
-      "password": "password123",
-      "role": "user",
-      "email": "jane@example.com"
+      "userId": "B00000002",
+      "first": "Sophia",
+      "last": "Martinez",
+      "password": "password02",
+      "email": "sophia@bloomie.com"
     },
     {
       "id": 3,
-      "username": "john_doe",
-      "password": "mypassword",
-      "role": "user",
-      "email": "john@example.com"
+      "userId": "B00000003",
+      "first": "Noah",
+      "last": "Thompson",
+      "password": "password03",
+      "email": "noah@bloomie.com"
+    },
+    {
+      "id": 4,
+      "userId": "B00000004",
+      "first": "Olivia",
+      "last": "Hughes",
+      "password": "password04",
+      "email": "olivia@bloomie.com"
+    },
+    {
+      "id": 5,
+      "userId": "B00000005",
+      "first": "Ethan",
+      "last": "Bennett",
+      "password": "password05",
+      "email": "ethan@bloomie.com"
+    },
+    {
+      "id": 6,
+      "userId": "B00000006",
+      "first": "Ava",
+      "last": "Mitchell",
+      "password": "password06",
+      "email": "ava@bloomie.com"
+    },
+    {
+      "id": 7,
+      "userId": "B00000007",
+      "first": "Mason",
+      "last": "Foster",
+      "password": "password07",
+      "email": "mason@bloomie.com"
     }
   ],
   "flowers": [
@@ -31,7 +66,12 @@
       "imageKey": "flowerBouquet01",
       "img": "img1",
       "price": 25,
-      "tags": ["flowerBouquet", "romantic", "rose", "spring"],
+      "tags": [
+        "flowerBouquet",
+        "romantic",
+        "rose",
+        "spring"
+      ],
       "favorite": true,
       "reviews": [
         {
@@ -56,7 +96,12 @@
       "imageKey": "flowerBouquet02",
       "img": "img2",
       "price": 35,
-      "tags": ["flowerBouquet", "cheerful", "tulip", "spring"],
+      "tags": [
+        "flowerBouquet",
+        "cheerful",
+        "tulip",
+        "spring"
+      ],
       "favorite": true,
       "reviews": [
         {
@@ -81,7 +126,12 @@
       "imageKey": "flowerBouquet03",
       "img": "img3",
       "price": 25,
-      "tags": ["flowerBouquet", "vibrant", "sunflower", "summer"],
+      "tags": [
+        "flowerBouquet",
+        "vibrant",
+        "sunflower",
+        "summer"
+      ],
       "favorite": true,
       "reviews": [
         {
@@ -100,7 +150,12 @@
       "imageKey": "flowerBouquet04",
       "img": "img4",
       "price": 20,
-      "tags": ["flowerBouquet", "minimalist", "daisy", "spring"],
+      "tags": [
+        "flowerBouquet",
+        "minimalist",
+        "daisy",
+        "spring"
+      ],
       "favorite": false,
       "reviews": [
         {
@@ -119,7 +174,12 @@
       "imageKey": "flowerBouquet05",
       "img": "img5",
       "price": 30,
-      "tags": ["flowerBouquet", "exotic", "orchid", "luxury"],
+      "tags": [
+        "flowerBouquet",
+        "exotic",
+        "orchid",
+        "luxury"
+      ],
       "favorite": true,
       "reviews": [
         {
@@ -144,7 +204,12 @@
       "imageKey": "flowerBouquet06",
       "img": "img6",
       "price": 40,
-      "tags": ["flowerBouquet", "sunny", "sunflower", "vivid"],
+      "tags": [
+        "flowerBouquet",
+        "sunny",
+        "sunflower",
+        "vivid"
+      ],
       "favorite": true,
       "reviews": [
         {
@@ -163,7 +228,12 @@
       "imageKey": "flowerBouquet07",
       "img": "img7",
       "price": 25,
-      "tags": ["flowerBouquet", "peaceful", "daisy", "simple"],
+      "tags": [
+        "flowerBouquet",
+        "peaceful",
+        "daisy",
+        "simple"
+      ],
       "favorite": true,
       "reviews": [
         {
@@ -182,7 +252,12 @@
       "imageKey": "flowerBouquet08",
       "img": "img8",
       "price": 35,
-      "tags": ["flowerBouquet", "mystic", "orchid", "unique"],
+      "tags": [
+        "flowerBouquet",
+        "mystic",
+        "orchid",
+        "unique"
+      ],
       "favorite": false,
       "reviews": [
         {
@@ -201,7 +276,12 @@
       "imageKey": "flowerBouquet09",
       "img": "img9",
       "price": 45,
-      "tags": ["flowerBouquet", "royal", "orchid", "premium"],
+      "tags": [
+        "flowerBouquet",
+        "royal",
+        "orchid",
+        "premium"
+      ],
       "favorite": false,
       "reviews": [
         {
@@ -224,8 +304,12 @@
         "rating": 4.6,
         "reviews": 126,
         "frequency": {
-          "weekly": { "price": 28 },
-          "monthly": { "price": 32 }
+          "weekly": {
+            "price": 28
+          },
+          "monthly": {
+            "price": 32
+          }
         }
       },
       {
@@ -237,8 +321,12 @@
         "rating": 4.8,
         "reviews": 98,
         "frequency": {
-          "weekly": { "price": 35 },
-          "monthly": { "price": 38 }
+          "weekly": {
+            "price": 35
+          },
+          "monthly": {
+            "price": 38
+          }
         }
       },
       {
@@ -250,8 +338,12 @@
         "rating": 4.9,
         "reviews": 210,
         "frequency": {
-          "weekly": { "price": 50 },
-          "monthly": { "price": 54 }
+          "weekly": {
+            "price": 50
+          },
+          "monthly": {
+            "price": 54
+          }
         }
       }
     ],
@@ -265,8 +357,12 @@
         "rating": 4.5,
         "reviews": 88,
         "frequency": {
-          "weekly": { "price": 24 },
-          "monthly": { "price": 27 }
+          "weekly": {
+            "price": 24
+          },
+          "monthly": {
+            "price": 27
+          }
         }
       },
       {
@@ -278,8 +374,12 @@
         "rating": 4.7,
         "reviews": 112,
         "frequency": {
-          "weekly": { "price": 30 },
-          "monthly": { "price": 34 }
+          "weekly": {
+            "price": 30
+          },
+          "monthly": {
+            "price": 34
+          }
         }
       },
       {
@@ -291,8 +391,12 @@
         "rating": 4.8,
         "reviews": 145,
         "frequency": {
-          "weekly": { "price": 46 },
-          "monthly": { "price": 50 }
+          "weekly": {
+            "price": 46
+          },
+          "monthly": {
+            "price": 50
+          }
         }
       }
     ],
@@ -306,8 +410,12 @@
         "rating": 4.6,
         "reviews": 76,
         "frequency": {
-          "weekly": { "price": 34 },
-          "monthly": { "price": 38 }
+          "weekly": {
+            "price": 34
+          },
+          "monthly": {
+            "price": 38
+          }
         }
       },
       {
@@ -319,8 +427,12 @@
         "rating": 4.7,
         "reviews": 89,
         "frequency": {
-          "weekly": { "price": 42 },
-          "monthly": { "price": 46 }
+          "weekly": {
+            "price": 42
+          },
+          "monthly": {
+            "price": 46
+          }
         }
       },
       {
@@ -332,13 +444,77 @@
         "rating": 4.9,
         "reviews": 134,
         "frequency": {
-          "weekly": { "price": 55 },
-          "monthly": { "price": 60 }
+          "weekly": {
+            "price": 55
+          },
+          "monthly": {
+            "price": 60
+          }
         }
       }
     ]
   },
-  "subscriptions": [],
+  "subscriptions": [
+    {
+      "address": "kwewe34 street",
+      "city": "vancouver",
+      "zip": "2e3w4r",
+      "cardName": "john",
+      "cardNumber": "1223343434234242",
+      "expiry": "04/26",
+      "cvv": "234",
+      "userId": 1,
+      "bouquetId": "M2",
+      "type": "Modern",
+      "frequency": "Monthly",
+      "price": 46,
+      "id": 2
+    },
+    {
+      "userId": 1,
+      "bouquetId": "W1",
+      "bouquetName": "Wildflower Bouquet",
+      "type": "Wildflower",
+      "frequency": "Monthly",
+      "price": 27,
+      "status": "active",
+      "address": "yew street 333",
+      "city": "vaxiuver",
+      "zip": "2d23s4",
+      "cardNumber": "1234567890342567",
+      "nextDelivery": "2025-09-15",
+      "upcomingDeliveries": [
+        {
+          "date": "2025-09-15",
+          "name": "Wildflower Bouquet",
+          "status": "confirmed"
+        }
+      ],
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "bouquetId": "W2",
+      "bouquetName": "Wildflower Bouquet",
+      "type": "Wildflower",
+      "frequency": "Weekly",
+      "price": 30,
+      "status": "active",
+      "address": "test stree5 222",
+      "city": "vancouver",
+      "zip": "234ses",
+      "cardNumber": "2235567778885432",
+      "nextDelivery": "2025-08-22",
+      "upcomingDeliveries": [
+        {
+          "date": "2025-08-22",
+          "name": "Wildflower Bouquet",
+          "status": "confirmed"
+        }
+      ],
+      "id": 4
+    }
+  ],
   "comments": [
     {
       "id": "1",

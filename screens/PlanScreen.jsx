@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import RatingStars from "../components/RatingStar";
+import { useUserState } from "../services/UserState";
 
 // Import bouquet images
 import wildImg from "../assets/images/home/wild.png";
@@ -26,7 +27,7 @@ const images = {
 export default function PlanScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-
+  const { user } = useUserState();
   // Extract initial type and frequency from route params (if any)
   const { type: routeType, frequency: routeFreq } = route.params || {};
 
@@ -73,13 +74,24 @@ export default function PlanScreen() {
 
   // Handle checkout button press
   const handleCheckout = () => {
+    // not logged in, go to login with params
+    console.log("user", user);
+    if (!user) {
+      navigation.navigate("login", {
+        from: "planCheckout",
+        frequency,
+        bouquetId: selectedBouquetId,
+        type,
+      });
+      return;
+    }
     if (!selectedBouquetId) {
       alert("Please select a bouquet first");
       return;
     }
+    //if logged in
     console.log("frequency", frequency);
     console.log("selectedBouquetId", selectedBouquetId);
-
     // Navigate to checkout screen with selected frequency and bouquetId
     navigation.navigate("planCheckout", {
       frequency,
@@ -154,14 +166,14 @@ export default function PlanScreen() {
             <TouchableOpacity
               key={item.id}
               onPress={() => handleSelectBouquet(item.id)}
-              className={`bg-white rounded-xl p-4 mb-4 shadow-sm border ${
+              className={`bg-white rounded-xl mb-4 shadow-sm border ${
                 selectedBouquetId === item.id
                   ? "border-[#C02C26]"
                   : "border-gray-200"
               }`}
             >
               {/* Image and Info */}
-              <View className="flex-row items-center mb-4">
+              <View className="flex-row items-center p-4">
                 <Image source={images[type]} className="w-24 h-24 rounded-lg" />
                 <View className="ml-6 flex-1">
                   <Text className="text-lg font-semibold">

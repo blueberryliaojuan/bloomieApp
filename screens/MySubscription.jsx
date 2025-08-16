@@ -7,7 +7,14 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  ImageBackground,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUserState } from "../services/UserState.js";
 
@@ -172,44 +179,52 @@ export default function SubscriptionScreen() {
         </View>
 
         {/* Subscription Card */}
-        <View className="bg-[#C02C26] rounded-xl p-4 mb-6 ">
-          <View className="flex-row justify-between">
-            <View>
-              <Text className="text-white text-lg font-bold">
-                {bouquetName}
-              </Text>
-              <Text className="text-white mt-2">
-                Next delivery: {nextDelivery}
+        <View className="rounded-xl  mb-8 ">
+          <ImageBackground
+            source={require("../assets/RectangleBg.png")}
+            className="w-full h-52 px-4 py-8 rounded-xl overflow-hidden"
+            resizeMode="cover"
+          >
+            <View className="flex-row justify-between">
+              <View>
+                <Text className="text-white text-lg font-bold">
+                  {bouquetName}
+                </Text>
+                <Text className="text-white mt-2">
+                  Next delivery: {nextDelivery}
+                </Text>
+              </View>
+
+              <Text className="text-white text-xl font-bold mt-1">
+                ${price}{" "}
+                <Text className="text-base font-normal">
+                  / {frequency === "monthly" ? "Month" : "Week"}
+                </Text>
               </Text>
             </View>
-
-            <Text className="text-white text-xl font-bold mt-1">
-              ${price}{" "}
-              <Text className="text-base font-normal">/ {frequency}</Text>
-            </Text>
-          </View>
-          <View className="flex-row mt-4 space-x-3">
-            <TouchableOpacity
-              className="flex-1 border border-white rounded-lg py-2"
-              onPress={() => toggleSubscription(subscription)}
-            >
-              <Text className="text-center text-white font-semibold">
-                {subscription.status === "paused" ? "Activate" : "Pause"}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              className="flex-1 bg-white rounded-lg py-2 ml-4"
-              onPress={() => navigation.navigate("modifyPlan")}
-            >
-              <Text className="text-center text-red-600 font-semibold">
-                Modify
-              </Text>
-            </TouchableOpacity>
-          </View>
+            <View className="flex-row mt-12 space-x-3">
+              <TouchableOpacity
+                className="flex-1 border border-white rounded-lg py-2"
+                onPress={() => toggleSubscription(subscription)}
+              >
+                <Text className="text-center text-white font-semibold">
+                  {subscription.status === "paused" ? "Activate" : "Pause"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="flex-1 bg-white rounded-lg py-2 ml-4"
+                onPress={() => navigation.navigate("modifyPlan")}
+              >
+                <Text className="text-center text-red-600 font-semibold">
+                  Modify
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
         </View>
 
         {/* Upcoming Deliveries */}
-        <Text className="text-lg font-bold mb-3">Upcoming Deliveries</Text>
+        <Text className="text-lg font-bold mb-2">Upcoming Deliveries</Text>
         {upcomingDeliveries.length > 0 ? (
           upcomingDeliveries.map((item, idx) => {
             const itemStatus = item.status || "Unknown";
@@ -245,18 +260,39 @@ export default function SubscriptionScreen() {
         )}
 
         {/* Settings */}
-        <Text className="text-lg font-bold mb-3">Settings</Text>
+        <Text className="text-lg font-bold mb-2 mt-8">Settings</Text>
         <View className="bg-gray-50 rounded-lg mb-6">
           <View className="flex-row items-center border-b border-gray-200 p-4">
+            <View className="w-12 h-12 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
+              <Image
+                source={require("../assets/icons/Truck.png")}
+                className="w-6 h-6"
+                resizeMode="contain"
+              />
+            </View>
             <Text className="ml-3">Delivery Frequency: {frequency}</Text>
           </View>
           <View className="flex-row items-center border-b border-gray-200 p-4">
+            <View className="w-12 h-12 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
+              <Image
+                source={require("../assets/icons/HouseLine.png")}
+                className="w-6 h-6"
+                resizeMode="contain"
+              />
+            </View>
             <Text className="ml-3">
               Delivery Address: {subscription.address || "N/A"},{" "}
               {subscription.city || "N/A"}, {subscription.zip || "N/A"}
             </Text>
           </View>
           <View className="flex-row items-center p-4">
+            <View className="w-12 h-12 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
+              <Image
+                source={require("../assets/icons/CreditCard.png")}
+                className="w-6 h-6"
+                resizeMode="contain"
+              />
+            </View>
             <Text className="ml-3">
               Payment Method: **** **** ****{" "}
               {subscription.cardNumber

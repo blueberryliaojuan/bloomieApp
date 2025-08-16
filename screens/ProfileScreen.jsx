@@ -1,3 +1,13 @@
+/**
+ * @file ProfileScreen.jsx
+ * @description User profile screen for Bloomie app.
+ *              Displays user info, account options, delivery settings, and sign-out button.
+ *              Redirects to login if the user is not logged in.
+ *              Uses react-native Switch for notification toggle.
+ * @author Juan
+ * @date 2025-08
+ */
+
 import { View, Text, TouchableOpacity, Switch } from "react-native";
 import { useState, useEffect } from "react";
 import { useUserState } from "../services/UserState";
@@ -7,22 +17,21 @@ export default function ProfileScreen({ navigation }) {
   const { user, clearUser } = useUserState();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
-  // 检查登录状态
+  // Check login status on component mount
   useEffect(() => {
     if (!user) {
-      // 如果未登录，跳到登录页面
+      // Redirect to login page if user is not logged in
       navigation.replace("login");
     }
   }, [user]);
 
-  if (!user) {
-    return null; // 防止页面在未登录状态下闪一下
-  }
+  // Prevent rendering flash if user is not logged in
+  if (!user) return null;
 
   return (
     <View className="flex-1 bg-white">
       {/* User Info Card */}
-      <View className=" mx-4 mt-8 rounded-lg p-4">
+      <View className="mx-4 mt-8 rounded-lg p-4">
         <Text className="text-xl font-bold text-center mb-4">
           {user?.first} {user?.last}
         </Text>
@@ -39,7 +48,7 @@ export default function ProfileScreen({ navigation }) {
           </View>
         </View>
 
-        {/* Stats */}
+        {/* User Stats */}
         <View className="flex-row mt-4 justify-around border-t border-dotted border-gray-300 pt-3">
           <View className="items-center">
             <Text className="font-semibold">12</Text>
@@ -52,7 +61,7 @@ export default function ProfileScreen({ navigation }) {
         </View>
       </View>
 
-      {/* My Account */}
+      {/* Account Section */}
       <Text className="mt-6 mb-2 px-4 font-semibold text-lg">My Account</Text>
       <View className="bg-gray-100 mx-4 rounded-lg">
         <MenuItem
@@ -68,7 +77,7 @@ export default function ProfileScreen({ navigation }) {
         <MenuItem icon="star-outline" label="Reviews" onPress={() => {}} />
       </View>
 
-      {/* Delivery Settings */}
+      {/* Delivery Settings Section */}
       <Text className="mt-6 mb-2 px-4 font-semibold text-lg">
         Delivery Settings
       </Text>
@@ -78,6 +87,8 @@ export default function ProfileScreen({ navigation }) {
           label="Delivery Address"
           onPress={() => {}}
         />
+
+        {/* Notification toggle */}
         <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-300">
           <View className="flex-row items-center">
             <Ionicons name="notifications-outline" size={20} color="#C02C26" />
@@ -90,6 +101,7 @@ export default function ProfileScreen({ navigation }) {
             thumbColor={"white"}
           />
         </View>
+
         <MenuItem
           icon="card-outline"
           label="Payment method"
@@ -97,12 +109,12 @@ export default function ProfileScreen({ navigation }) {
         />
       </View>
 
-      {/* Sign Out */}
+      {/* Sign Out Button */}
       <TouchableOpacity
         className="bg-[#C02C26] mx-4 mt-8 py-3 rounded-full"
         onPress={() => {
-          clearUser();
-          navigation.navigate("home");
+          clearUser(); // Clear user state
+          navigation.navigate("home"); // Navigate back to home
         }}
       >
         <Text className="text-white text-center text-lg font-semibold">
@@ -113,6 +125,7 @@ export default function ProfileScreen({ navigation }) {
   );
 }
 
+// MenuItem component for consistent row styling
 function MenuItem({ icon, label, onPress }) {
   return (
     <TouchableOpacity

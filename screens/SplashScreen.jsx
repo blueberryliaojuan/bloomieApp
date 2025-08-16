@@ -6,13 +6,18 @@
  * Created: 2025-06
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image } from "react-native";
 import LottieView from "lottie-react-native";
 import { onboardingManager } from "../services/OnboardingManager.js";
 
 function SplashScreen({ navigation }) {
+  const [playAnimation, setPlayAnimation] = useState(false);
   useEffect(() => {
+    const animationTimer = setTimeout(() => {
+      setPlayAnimation(true);
+    }, 5000);
+
     async function checkOnboarding() {
       await onboardingManager.loadFlag();
       if (onboardingManager.isCompleted()) {
@@ -21,10 +26,9 @@ function SplashScreen({ navigation }) {
         navigation.replace("onboarding"); // Otherwise navigate to onboarding
       }
     }
-
     const timer = setTimeout(() => {
       checkOnboarding();
-    }, 2000); // Delay navigation for splash animation
+    }, 7000); // Delay navigation for splash animation
 
     return () => clearTimeout(timer); // Clear timeout on unmount
   }, [navigation]);
@@ -33,7 +37,7 @@ function SplashScreen({ navigation }) {
     <View className="flex-1 flex flex-col justify-center items-center bg-[#C02C26]">
       <LottieView
         source={require("../assets/animations/bloomieLogo.json")}
-        autoPlay
+        autoPlay={playAnimation}
         loop={false}
         style={{ width: 300, height: 300, alignSelf: "center" }}
       />

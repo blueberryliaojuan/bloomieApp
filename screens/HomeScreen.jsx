@@ -115,7 +115,7 @@ export default function HomeScreen() {
           {bouquetTypes.map((t) => (
             <TouchableOpacity
               key={t}
-              className={`bg-white rounded-xl shadow h-80 w-60 mr-4 p-4 border-2 ${
+              className={`bg-white rounded-xl shadow h-80 w-60 mr-4 p-4 border-2 overflow-hidden ${
                 type === t ? "border-[#C02C26]" : "border-transparent"
               }`}
               onPress={() => {
@@ -126,6 +126,12 @@ export default function HomeScreen() {
                 });
               }}
             >
+              {/* Decorative shadow images */}
+              <Image
+                source={require("../assets/flowerLogoShadow.png")}
+                className="absolute -top-16 -left-2 w-60 h-60"
+                style={{ transform: [{ rotate: "15deg" }] }}
+              />
               {/* Bouquet Image */}
               <View className="items-center justify-center h-48">
                 <Image

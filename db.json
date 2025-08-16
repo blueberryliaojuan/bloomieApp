@@ -457,11 +457,11 @@
   "subscriptions": [
     {
       "userId": 1,
-      "bouquetId": "M1",
-      "bouquetName": "Modern Bouquet",
-      "type": "Modern",
+      "bouquetId": "W1",
+      "bouquetName": "Wildflower Bouquet",
+      "type": "Wildflower",
       "frequency": "Weekly",
-      "price": 34,
+      "price": 24,
       "status": "active",
       "address": "Yew 123",
       "city": "vancouver",
@@ -471,17 +471,17 @@
       "upcomingDeliveries": [
         {
           "date": "2025-08-23",
-          "name": "Modern Bouquet",
-          "status": "scheduled"
+          "name": "Wildflower Bouquet",
+          "status": "confirmed"
         },
         {
           "date": "2025-08-30",
-          "name": "Modern Bouquet",
+          "name": "Wildflower Bouquet",
           "status": "scheduled"
         },
         {
           "date": "2025-09-06",
-          "name": "Modern Bouquet",
+          "name": "Wildflower Bouquet",
           "status": "scheduled"
         }
       ],

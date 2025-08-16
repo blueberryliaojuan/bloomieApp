@@ -1,43 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+/**
+ * @file OnBoardingScreen.jsx
+ * @description Onboarding screens for Bloome flower app.
+ *              Uses react-native-onboarding-swiper to show 3 intro slides.
+ *              Custom Skip, Next, and Done buttons with original rounded styles.
+ *              Navigates to login screen after skipping or finishing onboarding.
+ * @author Juan
+ * @date 2025-08
+ */
+
+import React from "react";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Dimensions } from "react-native";
+
+// Get device screen width for responsive images
 const { width: screenWidth } = Dimensions.get("window");
 
 function OnBoardingScreen({ navigation }) {
-  const SkipButton = (props) => {
-    return (
-      <TouchableOpacity
-        {...props}
-        className="px-8 py-4 rounded-tl-[100%] rounded-bl-[100%]  bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
-      >
-        <Text className="text-white font-semibold text-base">Skip</Text>
-      </TouchableOpacity>
-    );
-  };
+  // Custom Skip button
+  const SkipButton = (props) => (
+    <TouchableOpacity
+      {...props}
+      className="px-8 py-4 rounded-tl-[100%] rounded-bl-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
+    >
+      <Text className="text-white font-semibold text-base">Skip</Text>
+    </TouchableOpacity>
+  );
 
-  const NextButton = (props) => {
-    return (
-      <TouchableOpacity
-        {...props}
-        className="px-8 py-4 rounded-tr-[100%] rounded-br-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
-      >
-        <Text className="text-white font-semibold text-base">Next</Text>
-      </TouchableOpacity>
-    );
-  };
+  // Custom Next button
+  const NextButton = (props) => (
+    <TouchableOpacity
+      {...props}
+      className="px-8 py-4 rounded-tr-[100%] rounded-br-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
+    >
+      <Text className="text-white font-semibold text-base">Next</Text>
+    </TouchableOpacity>
+  );
 
-  const DoneButton = ({ ...props }) => {
-    return (
-      <TouchableOpacity
-        {...props}
-        className="px-8 py-4 rounded-tr-[100%] rounded-br-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
-      >
-        <Text className="text-white font-semibold text-base">Finish</Text>
-      </TouchableOpacity>
-    );
-  };
+  // Custom Done button
+  const DoneButton = (props) => (
+    <TouchableOpacity
+      {...props}
+      className="px-8 py-4 rounded-tr-[100%] rounded-br-[100%] bg-[#C02C26] rounded-full items-center justify-center active:opacity-70"
+    >
+      <Text className="text-white font-semibold text-base">Finish</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <Onboarding
       onSkip={() => navigation.replace("login")}
@@ -45,7 +53,7 @@ function OnBoardingScreen({ navigation }) {
       SkipButtonComponent={SkipButton}
       NextButtonComponent={NextButton}
       DoneButtonComponent={DoneButton}
-      bottomBarHighlight={false}
+      bottomBarHighlight={false} // disable default bottom highlight
       pages={[
         {
           backgroundColor: "#fff",
@@ -81,7 +89,7 @@ function OnBoardingScreen({ navigation }) {
                 resizeMode="contain"
               />
               <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
-                Our specially-trained flower experts handpicks only the freshest
+                Our specially-trained flower experts handpick only the freshest
                 blooms.
               </Text>
             </View>

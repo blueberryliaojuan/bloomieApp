@@ -1,5 +1,5 @@
 /**
- * @file PlanPayment.jsx
+ * @file PlanCheckout.jsx
  * @description Payment page for Bloome flower subscription app.
  *              Displays order summary, address form, payment inputs, and subscription button.
  *              Uses react-hook-form + yup for validation, stores data to JSON Server, and associates subscription with logged-in user.
@@ -20,7 +20,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { loginManager } from "../services/LoginManager.js"; // 导入登录管理器
+import { loginManager } from "../services/LoginManager.js"; // Login manager
 
 // Bouquet images
 import wildImg from "../assets/images/home/wild.png";
@@ -34,7 +34,7 @@ const images = {
   Modern: modernImg,
 };
 
-// Yup schema
+// Yup validation schema for form fields
 const schema = yup.object().shape({
   address: yup.string().required("Street Address is required"),
   city: yup.string().required("City is required"),
@@ -62,8 +62,8 @@ export default function PlanPayment() {
   const route = useRoute();
   const { bouquetId, frequency, type } = route.params;
 
-  const [plan, setPlan] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [plan, setPlan] = useState(null); // Store current plan details
+  const [loading, setLoading] = useState(true); // Loading state for fetch
 
   // react-hook-form setup
   const {
@@ -75,7 +75,10 @@ export default function PlanPayment() {
     resolver: yupResolver(schema),
   });
 
-  // Fetch plan data
+  /**
+   * Fetch plan data from JSON Server
+   * Based on bouquet type and ID passed via route params
+   */
   useEffect(() => {
     const fetchPlan = async () => {
       try {
@@ -98,7 +101,12 @@ export default function PlanPayment() {
     fetchPlan();
   }, [bouquetId, type]);
 
-  // Submit form
+  /**
+   * Handle form submission
+   * - Check user login
+   * - Calculate upcoming deliveries
+   * - Save subscription to JSON Server
+   */
   const onSubmit = async (formData) => {
     const currentUser = loginManager.getCurrentUser();
 
@@ -107,11 +115,10 @@ export default function PlanPayment() {
       return;
     }
 
-    // 计算下一次送货日期（示例：按frequency计算）
     const now = new Date();
     let deliveries = [];
 
-    // helper function：根据 frequency 增加日期
+    // Helper to calculate delivery dates based on frequency
     const addDeliveryDate = (baseDate, times) => {
       const d = new Date(baseDate);
       if (frequency.toLowerCase() === "monthly") {
@@ -122,13 +129,13 @@ export default function PlanPayment() {
       return d.toISOString().split("T")[0];
     };
 
-    // 生成三条 upcomingDeliveries
+    // Generate 3 upcoming deliveries
     for (let i = 1; i <= 3; i++) {
       const deliveryDate = addDeliveryDate(now, i);
       deliveries.push({
         date: deliveryDate,
         name: `${plan.type} Bouquet`,
-        status: i === 1 ? "confirmed" : "scheduled", // 第一条 confirmed，其余 scheduled
+        status: i === 1 ? "confirmed" : "scheduled",
       });
     }
 
@@ -151,25 +158,25 @@ export default function PlanPayment() {
     console.log("newSubscription", newSubscription);
 
     try {
-      // 先查一下该用户是否已有订阅
+      // Check if user already has a subscription
       const checkRes = await fetch(
         `http://192.168.1.71:3000/subscriptions?userId=${newSubscription.userId}`
       );
       const existingSubs = await checkRes.json();
 
       if (existingSubs.length > 0) {
-        // 如果已有订阅 → 更新第一个
+        // Update the first existing subscription
         const existingSub = existingSubs[0];
         await fetch(
           `http://192.168.1.71:3000/subscriptions/${existingSub.id}`,
           {
-            method: "PATCH", // 或 PUT，看你需求
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newSubscription),
           }
         );
       } else {
-        // 否则创建新的
+        // Create new subscription
         await fetch("http://192.168.1.71:3000/subscriptions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -177,7 +184,7 @@ export default function PlanPayment() {
         });
       }
 
-      // Reset form and navigate
+      // Reset form and navigate to MySubscription screen
       reset();
       navigation.navigate("profileStack", {
         screen: "mySubscription",
@@ -191,6 +198,8 @@ export default function PlanPayment() {
       console.error("Error saving subscription:", err);
     }
   };
+
+  // Show loading state
   if (loading) {
     return (
       <View className="flex-1 justify-center items-center">
@@ -199,6 +208,7 @@ export default function PlanPayment() {
     );
   }
 
+  // Show if plan not found
   if (!plan) {
     return (
       <View className="flex-1 justify-center items-center">
@@ -220,11 +230,13 @@ export default function PlanPayment() {
         </Text>
 
         <View className="flex-row items-center border-b border-gray-300 pb-4 mb-4">
+          {/* Bouquet Image */}
           <Image
             source={images[plan.type]}
             className="h-40 w-40 rounded-lg"
             resizeMode="contain"
           />
+          {/* Bouquet Details */}
           <View className="ml-4 flex-1">
             <Text className="text-black font-semibold text-lg">
               {plan.type} Bouquet
@@ -238,7 +250,7 @@ export default function PlanPayment() {
           </View>
         </View>
 
-        {/* Address */}
+        {/* Address Inputs */}
         <Text className="text-black font-bold text-base mb-2 mt-8">
           Street Address
         </Text>
@@ -261,6 +273,7 @@ export default function PlanPayment() {
         )}
 
         <View className="flex-row">
+          {/* City Input */}
           <View className="flex-1 mr-2">
             <Controller
               control={control}
@@ -281,6 +294,7 @@ export default function PlanPayment() {
             )}
           </View>
 
+          {/* ZIP Input */}
           <View className="w-24">
             <Controller
               control={control}
@@ -303,7 +317,7 @@ export default function PlanPayment() {
           </View>
         </View>
 
-        {/* Payment */}
+        {/* Payment Inputs */}
         <Text className="text-black font-bold text-base mb-2 mt-8">
           Payment Method
         </Text>
@@ -346,6 +360,7 @@ export default function PlanPayment() {
         )}
 
         <View className="flex-row space-x-4">
+          {/* Expiry Input */}
           <View className="flex-1">
             <Controller
               control={control}
@@ -366,7 +381,8 @@ export default function PlanPayment() {
             )}
           </View>
 
-          <View className="w-24">
+          {/* CVV Input */}
+          <View className="w-24 ml-2">
             <Controller
               control={control}
               name="cvv"
@@ -388,7 +404,7 @@ export default function PlanPayment() {
           </View>
         </View>
 
-        {/* Security info */}
+        {/* Security Info */}
         <View className="bg-gray-100 p-4 rounded-md mb-12">
           <Text className="text-gray-600 text-sm">
             Your payment information is secure and encrypted

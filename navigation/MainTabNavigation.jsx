@@ -33,7 +33,7 @@ export default function MainTabNavigator() {
             iconSource = require("../assets/icons/Plan.png");
           } else if (route.name === "shop") {
             iconSource = require("../assets/icons/Cart.png");
-          } else if (route.name === "profile") {
+          } else if (route.name === "profileStack") {
             iconSource = require("../assets/icons/Profile.png");
           }
 
@@ -54,7 +54,7 @@ export default function MainTabNavigator() {
       <Tab.Screen name="home" component={HomeScreen} />
       <Tab.Screen name="plan" component={PlanStackNavigation} />
       <Tab.Screen name="shop" component={ShopStackNavigation} />
-      <Tab.Screen name="profile" component={ProfileStackNavigation} />
+      <Tab.Screen name="profileStack" component={ProfileStackNavigation} />
     </Tab.Navigator>
   );
 }

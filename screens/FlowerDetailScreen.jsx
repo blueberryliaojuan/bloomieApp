@@ -58,8 +58,8 @@ function FlowerDetailScreen() {
         }
 
         const data = await response.json();
-        console.log("detailed data", data);
-        setFlowerData(data[0]); // Only take the first match
+        console.log("detailed data", data[0]);
+        setFlowerData(data[0]);
       } catch (err) {
         console.log("Error fetching flower data:", err);
         setError(err.message);

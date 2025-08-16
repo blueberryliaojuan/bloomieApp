@@ -21,14 +21,6 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <View className="flex-1 bg-white">
-      {/* Header */}
-      {/* <View className="px-6 pt-6 pb-2">
-        <Text className="text-2xl font-bold text-center">Profile</Text>
-        <Text className="text-[#C02C26] text-left">
-          Manage your flower journey
-        </Text>
-      </View> */}
-
       {/* User Info Card */}
       <View className=" mx-4 mt-8 rounded-lg p-4">
         <Text className="text-xl font-bold text-center mb-4">
@@ -48,7 +40,7 @@ export default function ProfileScreen({ navigation }) {
         </View>
 
         {/* Stats */}
-        <View className="flex-row mt-4 justify-around border-t border-gray-300 pt-3">
+        <View className="flex-row mt-4 justify-around border-t border-dotted border-gray-300 pt-3">
           <View className="items-center">
             <Text className="font-semibold">12</Text>
             <Text className="text-gray-500 text-sm">Deliveries</Text>

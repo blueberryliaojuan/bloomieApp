@@ -200,26 +200,36 @@ export default function FavoriteScreen() {
   }
 
   return (
-    <SafeAreaView className="px-4 pt-2 flex-1">
+    <View className="flex-1 bg-white">
+      <View className="items-center pt-16 pb-4">
+        <Image
+          source={require("../assets/logoRed.png")}
+          className="h-10"
+          resizeMode="contain"
+        />
+      </View>
       {/* Suggested flowers */}
-      <Text className="text-lg font-bold mb-2 text-[#C02C26]">
-        You May Be Interested
-      </Text>
-      <SuggestionCarousel
-        data={suggestions}
-        imageMap={imageMap}
-        onAddFavorite={handleAddFavorite}
-      />
-
+      <View className="px-4 mt-4">
+        <Text className="text-lg font-bold mb-2 text-[#C02C26]">
+          You May Be Interested
+        </Text>
+        <SuggestionCarousel
+          data={suggestions}
+          imageMap={imageMap}
+          onAddFavorite={handleAddFavorite}
+        />
+      </View>
       {/* Favorite list */}
-      <Text className="text-lg font-bold mt-6 mb-2 text-[#C02C26]">
-        Your Favorites
-      </Text>
-      <FlatList
-        data={favorites}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderSwipeableItem}
-      />
-    </SafeAreaView>
+      <View className="px-4">
+        <Text className="text-lg font-bold mt-6 mb-2 text-[#C02C26]">
+          Your Favorites
+        </Text>
+        <FlatList
+          data={favorites}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderSwipeableItem}
+        />
+      </View>
+    </View>
   );
 }

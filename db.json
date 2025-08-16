@@ -456,63 +456,37 @@
   },
   "subscriptions": [
     {
-      "address": "kwewe34 street",
-      "city": "vancouver",
-      "zip": "2e3w4r",
-      "cardName": "john",
-      "cardNumber": "1223343434234242",
-      "expiry": "04/26",
-      "cvv": "234",
       "userId": 1,
-      "bouquetId": "M2",
+      "bouquetId": "M1",
+      "bouquetName": "Modern Bouquet",
       "type": "Modern",
-      "frequency": "Monthly",
-      "price": 46,
-      "id": 2
-    },
-    {
-      "userId": 1,
-      "bouquetId": "W1",
-      "bouquetName": "Wildflower Bouquet",
-      "type": "Wildflower",
-      "frequency": "Monthly",
-      "price": 27,
-      "status": "active",
-      "address": "yew street 333",
-      "city": "vaxiuver",
-      "zip": "2d23s4",
-      "cardNumber": "1234567890342567",
-      "nextDelivery": "2025-09-15",
-      "upcomingDeliveries": [
-        {
-          "date": "2025-09-15",
-          "name": "Wildflower Bouquet",
-          "status": "confirmed"
-        }
-      ],
-      "id": 3
-    },
-    {
-      "userId": 1,
-      "bouquetId": "W2",
-      "bouquetName": "Wildflower Bouquet",
-      "type": "Wildflower",
       "frequency": "Weekly",
-      "price": 30,
+      "price": 34,
       "status": "active",
-      "address": "test stree5 222",
+      "address": "Yew 123",
       "city": "vancouver",
-      "zip": "234ses",
-      "cardNumber": "2235567778885432",
-      "nextDelivery": "2025-08-22",
+      "zip": "1s23e3",
+      "cardNumber": "1234567890123456",
+      "nextDelivery": "2025-08-23",
       "upcomingDeliveries": [
         {
-          "date": "2025-08-22",
-          "name": "Wildflower Bouquet",
-          "status": "confirmed"
+          "date": "2025-08-23",
+          "name": "Modern Bouquet",
+          "status": "scheduled"
+        },
+        {
+          "date": "2025-08-30",
+          "name": "Modern Bouquet",
+          "status": "scheduled"
+        },
+        {
+          "date": "2025-09-06",
+          "name": "Modern Bouquet",
+          "status": "scheduled"
         }
       ],
-      "id": 4
+      "id": 1,
+      "size": "Small"
     }
   ],
   "comments": [

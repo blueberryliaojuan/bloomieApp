@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useUserState } from "../services/UserState.js";
-
+const { HOST } = require("../server");
 export default function SubscriptionScreen() {
   const navigation = useNavigation();
   const { user } = useUserState();
@@ -32,9 +32,7 @@ export default function SubscriptionScreen() {
 
     const fetchSubscriptions = async () => {
       try {
-        const res = await fetch(
-          `http://192.168.1.71:3000/subscriptions?userId=${user.id}`
-        );
+        const res = await fetch(`${HOST}/subscriptions?userId=${user.id}`);
         const data = await res.json();
         if (data.length > 0) {
           // 优先取 active 订阅
@@ -119,14 +117,11 @@ export default function SubscriptionScreen() {
       setSubscription(updatedSubscription);
 
       // 更新后台
-      const response = await fetch(
-        `http://192.168.1.71:3000/subscriptions/${subscription.id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedSubscription),
-        }
-      );
+      const response = await fetch(`${HOST}/subscriptions/${subscription.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedSubscription),
+      });
 
       if (!response.ok) throw new Error("Failed to update subscription");
 

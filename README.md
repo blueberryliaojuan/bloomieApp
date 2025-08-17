@@ -33,9 +33,10 @@ Bloomie is a flower store offering both in-store and online shopping options.
 
 ### Installation Steps:
 
-1. Install project dependencies: npm i
+1. Install project dependencies: npm install --legacy-peer-deps
 2. Set up the JSON Server: npm run db
-3. Start the development server: npm run start
+3. change the HOST of the file (server.js) to your own IP
+4. Start the development server: npm run start
 
 ---
 

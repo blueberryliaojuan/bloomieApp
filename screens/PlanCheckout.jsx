@@ -27,6 +27,7 @@ import wildImg from "../assets/images/home/wild.png";
 import classicImg from "../assets/images/home/classic.png";
 import modernImg from "../assets/images/home/modern.png";
 
+const { HOST } = require("../server");
 // Map bouquet type to corresponding image
 const images = {
   Classic: classicImg,
@@ -82,7 +83,7 @@ export default function PlanPayment() {
   useEffect(() => {
     const fetchPlan = async () => {
       try {
-        const response = await fetch("http://192.168.1.71:3000/bouquetData");
+        const response = await fetch(`${HOST}/bouquetData`);
         const data = await response.json();
         const planItem = data[type]?.find((item) => item.id === bouquetId);
 
@@ -160,24 +161,21 @@ export default function PlanPayment() {
     try {
       // Check if user already has a subscription
       const checkRes = await fetch(
-        `http://192.168.1.71:3000/subscriptions?userId=${newSubscription.userId}`
+        `${HOST}/subscriptions?userId=${newSubscription.userId}`
       );
       const existingSubs = await checkRes.json();
 
       if (existingSubs.length > 0) {
         // Update the first existing subscription
         const existingSub = existingSubs[0];
-        await fetch(
-          `http://192.168.1.71:3000/subscriptions/${existingSub.id}`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newSubscription),
-          }
-        );
+        await fetch(`${HOST}/subscriptions/${existingSub.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newSubscription),
+        });
       } else {
         // Create new subscription
-        await fetch("http://192.168.1.71:3000/subscriptions", {
+        await fetch(`${HOST}/subscriptions`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newSubscription),

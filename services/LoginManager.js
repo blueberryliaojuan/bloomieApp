@@ -1,7 +1,7 @@
 // loginManager.js
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const API_URL = "http://192.168.1.71:3000/users"; // 或你 json-server 的地址
+const { HOST } = require("../server");
+const API_URL = `${HOST}/users`;
 
 class LoginManager {
   constructor() {

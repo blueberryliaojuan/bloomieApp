@@ -210,26 +210,20 @@
     {
       "userId": 1,
       "flowerId": "bloomie03",
-      "deleted": true,
+      "deleted": false,
       "id": 8
     },
     {
       "userId": 1,
-      "flowerId": "bloomie05",
+      "flowerId": "bloomie04",
       "deleted": true,
       "id": 9
     },
     {
       "userId": 1,
-      "flowerId": "bloomie04",
+      "flowerId": "bloomie05",
       "deleted": false,
       "id": 10
-    },
-    {
-      "userId": 1,
-      "flowerId": "bloomie03",
-      "deleted": true,
-      "id": 11
     }
   ],
   "comments": [
@@ -521,5 +515,39 @@
       }
     ]
   },
-  "subscriptions": []
+  "subscriptions": [
+    {
+      "userId": 1,
+      "bouquetId": "W2",
+      "bouquetName": "Wildflower Bouquet",
+      "type": "Wildflower",
+      "frequency": "Weekly",
+      "price": 30,
+      "status": "active",
+      "address": "Yew 123",
+      "city": "Vancouver",
+      "zip": "2d23w3",
+      "cardNumber": "1234567890123456",
+      "nextDelivery": "2025-08-24",
+      "upcomingDeliveries": [
+        {
+          "date": "2025-08-24",
+          "name": "Wildflower Bouquet",
+          "status": "confirmed"
+        },
+        {
+          "date": "2025-08-31",
+          "name": "Wildflower Bouquet",
+          "status": "scheduled"
+        },
+        {
+          "date": "2025-09-07",
+          "name": "Wildflower Bouquet",
+          "status": "scheduled"
+        }
+      ],
+      "id": 1,
+      "size": "Medium"
+    }
+  ]
 }

@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import SuggestionCarousel from "../components/SuggestionCarousel";
 import { useUserState } from "../services/UserState";
 import { useFocusEffect } from "@react-navigation/native";
-
+const { HOST } = require("../server");
 const imageMap = {
   flowerBouquet01: require("../assets/images/flowerBouquet01.jpeg"),
   flowerBouquet02: require("../assets/images/flowerBouquet02.jpeg"),
@@ -23,11 +23,6 @@ const imageMap = {
   flowerBouquet08: require("../assets/images/flowerBouquet08.jpeg"),
   flowerBouquet09: require("../assets/images/flowerBouquet09.jpeg"),
 };
-
-const HOST =
-  Platform.OS === "android"
-    ? "http://10.0.2.2:3000"
-    : "http://192.168.1.71:3000";
 
 export default function FavoriteScreen() {
   const { user } = useUserState();

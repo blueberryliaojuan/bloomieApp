@@ -22,7 +22,7 @@ import {
 import InputField from "../components/InputField";
 import FlowerCard from "../components/FlowerCard";
 import { useUserState } from "../services/UserState"; // Custom hook for user login state
-
+const { HOST } = require("../server");
 function Shop() {
   // --------------------
   // State Hooks
@@ -37,8 +37,6 @@ function Shop() {
 
   const navigation = useNavigation();
   const { user } = useUserState(); // Current logged-in user
-
-  const HOST = "http://192.168.1.71:3000"; // Local API host
 
   // --------------------
   // API Functions

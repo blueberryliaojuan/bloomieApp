@@ -17,6 +17,7 @@ import classicImg from "../assets/images/home/classic.png";
 import wildflowerImg from "../assets/images/home/wild.png";
 import modernImg from "../assets/images/home/modern.png";
 
+const { HOST } = require("../server");
 // Map bouquet types to their corresponding images
 const bouquetImages = {
   Classic: classicImg,
@@ -33,7 +34,7 @@ export default function HomeScreen() {
 
   // Fetch bouquet data from local server on component mount
   useEffect(() => {
-    fetch("http://192.168.1.71:3000/bouquetData")
+    fetch(`${HOST}/bouquetData`)
       .then((res) => res.json())
       .then((data) => {
         console.log("data", data[0]);

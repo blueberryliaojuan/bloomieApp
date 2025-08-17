@@ -16,7 +16,7 @@ import { useUserState } from "../services/UserState";
 import wildImg from "../assets/images/home/wild.png";
 import classicImg from "../assets/images/home/classic.png";
 import modernImg from "../assets/images/home/modern.png";
-
+const { HOST } = require("../server");
 // Map bouquet type to corresponding image
 const images = {
   Classic: classicImg,
@@ -56,7 +56,7 @@ export default function PlanScreen() {
 
   // Fetch bouquet data from local server on component mount
   useEffect(() => {
-    fetch("http://192.168.1.71:3000/bouquetData")
+    fetch(`${HOST}/bouquetData`)
       .then((res) => res.json())
       .then((data) => setBouquetData(data))
       .catch((err) => console.error("Fetch bouquetData error:", err));
@@ -182,7 +182,7 @@ export default function PlanScreen() {
                   <RatingStars rating={item.rating} reviews={item.reviews} />
                   <Text className="text-[#C02C26] font-bold mt-2">
                     ${item.frequency[frequency.toLowerCase()].price} /{" "}
-                    {frequency === "monthly" ? "Month" : "Week"}
+                    {frequency === "Monthly" ? "Month" : "Week"}
                   </Text>
                 </View>
               </View>

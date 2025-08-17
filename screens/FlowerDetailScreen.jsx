@@ -16,13 +16,8 @@ import {
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import RatingStar from "../components/RatingStar"; // 假设你已有这个组件
-
+const { HOST } = require("../server");
 function FlowerDetailScreen() {
-  const HOST =
-    Platform.OS === "android"
-      ? "http://10.0.2.2:3000"
-      : "http://192.168.1.71:3000";
-
   const screenWidth = Dimensions.get("window").width;
   const navigation = useNavigation();
   const route = useRoute();

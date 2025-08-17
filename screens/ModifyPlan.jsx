@@ -17,7 +17,7 @@ import { useUserState } from "../services/UserState.js";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+const { HOST } = require("../server");
 export default function ModifySubscriptionScreen() {
   const navigation = useNavigation();
   const { user } = useUserState();
@@ -86,13 +86,11 @@ export default function ModifySubscriptionScreen() {
 
     const fetchData = async () => {
       try {
-        const bouquetRes = await fetch(`http://192.168.1.71:3000/bouquetData`);
+        const bouquetRes = await fetch(`${HOST}/bouquetData`);
         const bouquetJson = await bouquetRes.json();
         setBouquetData(bouquetJson);
 
-        const subRes = await fetch(
-          `http://192.168.1.71:3000/subscriptions?userId=${user.id}`
-        );
+        const subRes = await fetch(`${HOST}/subscriptions?userId=${user.id}`);
         const subJson = await subRes.json();
         if (subJson.length > 0) {
           const sub = subJson[0];
@@ -157,9 +155,7 @@ export default function ModifySubscriptionScreen() {
       const nextDelivery = upcomingDeliveries[0].date;
 
       // 先 fetch 用户订阅，拿到 subscription 的真实 id
-      const subRes = await fetch(
-        `http://192.168.1.71:3000/subscriptions?userId=${user.id}`
-      );
+      const subRes = await fetch(`${HOST}/subscriptions?userId=${user.id}`);
       const subs = await subRes.json();
       if (subs.length === 0) {
         Alert.alert("Error", "No subscription found");
@@ -168,23 +164,20 @@ export default function ModifySubscriptionScreen() {
       const subId = subs[0].id;
 
       // PATCH 更新订阅
-      const updateRes = await fetch(
-        `http://192.168.1.71:3000/subscriptions/${subId}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            type: data.bouquetStyle,
-            bouquetName: `${data.bouquetStyle} Bouquet`,
-            bouquetId: bouquetObj?.id,
-            size: data.bouquetSize,
-            frequency: data.delivery,
-            price,
-            nextDelivery,
-            upcomingDeliveries,
-          }),
-        }
-      );
+      const updateRes = await fetch(`${HOST}/subscriptions/${subId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: data.bouquetStyle,
+          bouquetName: `${data.bouquetStyle} Bouquet`,
+          bouquetId: bouquetObj?.id,
+          size: data.bouquetSize,
+          frequency: data.delivery,
+          price,
+          nextDelivery,
+          upcomingDeliveries,
+        }),
+      });
 
       if (updateRes.ok) {
         Alert.alert("Success", "Subscription updated!");

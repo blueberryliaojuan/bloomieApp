@@ -16,7 +16,7 @@ function SplashScreen({ navigation }) {
   useEffect(() => {
     const animationTimer = setTimeout(() => {
       setPlayAnimation(true);
-    }, 5000);
+    }, 500);
 
     async function checkOnboarding() {
       await onboardingManager.loadFlag();
@@ -28,7 +28,7 @@ function SplashScreen({ navigation }) {
     }
     const timer = setTimeout(() => {
       checkOnboarding();
-    }, 7000); // Delay navigation for splash animation
+    }, 2000); // Delay navigation for splash animation
 
     return () => clearTimeout(timer); // Clear timeout on unmount
   }, [navigation]);

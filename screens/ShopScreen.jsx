@@ -23,6 +23,8 @@ import InputField from "../components/InputField";
 import FlowerCard from "../components/FlowerCard";
 import { useUserState } from "../services/UserState"; // Custom hook for user login state
 const { HOST } = require("../server");
+import { onboardingManager } from "../services/OnboardingManager.js";
+
 function Shop() {
   // --------------------
   // State Hooks

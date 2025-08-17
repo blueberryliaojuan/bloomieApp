@@ -518,11 +518,11 @@
   "subscriptions": [
     {
       "userId": 1,
-      "bouquetId": "W2",
+      "bouquetId": "W1",
       "bouquetName": "Wildflower Bouquet",
       "type": "Wildflower",
       "frequency": "Weekly",
-      "price": 30,
+      "price": 24,
       "status": "active",
       "address": "Yew 123",
       "city": "Vancouver",
@@ -547,7 +547,7 @@
         }
       ],
       "id": 1,
-      "size": "Medium"
+      "size": "Small"
     }
   ]
 }

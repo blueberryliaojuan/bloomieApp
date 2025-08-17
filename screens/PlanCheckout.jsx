@@ -225,11 +225,11 @@ export default function PlanPayment() {
     <View className="flex-1 bg-white">
       <ScrollView className="px-4" keyboardShouldPersistTaps="handled">
         {/* Order Summary */}
-        <Text className="text-black font-bold text-base mt-4 mb-2">
+        <Text className="text-black font-bold text-lg mt-4 mb-2">
           Order Summary
         </Text>
 
-        <View className="flex-row items-center border-b border-gray-300 pb-4 mb-4">
+        <View className="flex-row items-center border-b border-dotted border-gray-300 pb-4 mb-4">
           {/* Bouquet Image */}
           <Image
             source={images[plan.type]}
@@ -405,7 +405,12 @@ export default function PlanPayment() {
         </View>
 
         {/* Security Info */}
-        <View className="bg-gray-100 p-4 rounded-md mb-12">
+        <View className="bg-gray-100 p-4 rounded-md mt-2 mb-12 flex-row items-center">
+          <Image
+            source={require("../assets/icons/ShieldCheck.png")}
+            className="w-6 h-6 mr-2"
+            resizeMode="contain"
+          />
           <Text className="text-gray-600 text-sm">
             Your payment information is secure and encrypted
           </Text>

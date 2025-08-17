@@ -261,40 +261,44 @@ export default function SubscriptionScreen() {
 
         {/* Settings */}
         <Text className="text-lg font-bold mb-2 mt-8">Settings</Text>
-        <View className="bg-gray-50 rounded-lg mb-6">
-          <View className="flex-row items-center border-b border-gray-200 p-4">
-            <View className="w-12 h-12 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
+        <View className="bg-gray-50 border border-gray-300 rounded-lg mb-4 p-2">
+          <View className="flex-row items-center  p-2">
+            <View className="w-10 h-10 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
               <Image
                 source={require("../assets/icons/Truck.png")}
                 className="w-6 h-6"
                 resizeMode="contain"
               />
             </View>
-            <Text className="ml-3">Delivery Frequency: {frequency}</Text>
+
+            <Text className="ml-2 font-semibold">Delivery Frequency: </Text>
+            <Text className="ml-2">{frequency}</Text>
           </View>
-          <View className="flex-row items-center border-b border-gray-200 p-4">
-            <View className="w-12 h-12 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
+          <View className="flex-row items-center p-2">
+            <View className="w-10 h-10 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
               <Image
                 source={require("../assets/icons/HouseLine.png")}
                 className="w-6 h-6"
                 resizeMode="contain"
               />
             </View>
-            <Text className="ml-3">
-              Delivery Address: {subscription.address || "N/A"},{" "}
-              {subscription.city || "N/A"}, {subscription.zip || "N/A"}
+            <Text className="ml-2 font-semibold">Delivery Address:</Text>
+            <Text className="ml-2">
+              {subscription.address || "N/A"}, {subscription.city || "N/A"},{" "}
+              {subscription.zip || "N/A"}
             </Text>
           </View>
-          <View className="flex-row items-center p-4">
-            <View className="w-12 h-12 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
+          <View className="flex-row items-center p-2">
+            <View className="w-10 h-10 rounded-full bg-[#C02C26] flex items-center justify-center mr-2">
               <Image
                 source={require("../assets/icons/CreditCard.png")}
                 className="w-6 h-6"
                 resizeMode="contain"
               />
             </View>
-            <Text className="ml-3">
-              Payment Method: **** **** ****{" "}
+            <Text className="ml-2 font-semibold">Payment Method:</Text>
+            <Text className="ml-2">
+              **** **** ****{" "}
               {subscription.cardNumber
                 ? subscription.cardNumber.slice(-4)
                 : "0000"}

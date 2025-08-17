@@ -1,89 +1,79 @@
+/**
+ * File: Shop.jsx
+ * Description:
+ *   Shop page displaying flowers for browsing. Users can search by name,
+ *   view flower details, and toggle favorites. Fetches data from local API
+ *   and manages flower/favorites state with error handling and loading indicators.
+ * Author: Juan Liao
+ * Created: 2025-08
+ */
+
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import {
   Image,
   View,
   Text,
   FlatList,
   TouchableOpacity,
-  Platform,
   ActivityIndicator,
+  Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "../components/InputField";
 import FlowerCard from "../components/FlowerCard";
-
-//>>>>>>>>> for using React Native AsyncStorage
-import {
-  setFavorites,
-  getFavorites,
-  addFavorite,
-  removeFavorite,
-} from "../services/FavoriteManager.js";
-//>>>>>>>>> for using React Native AsyncStorage
+import { useUserState } from "../services/UserState"; // Custom hook for user login state
 
 function Shop() {
-  const [activeFilter, setActiveFilter] = useState("Seasonal"); // default active filter
-  const [searchText, setSearchText] = useState(""); // state to hold search text
-  const initialFlowers = [];
-  const [isLoading, setIsLoading] = useState(true);
-  const [flowers, setFlowers] = useState(initialFlowers);
-  const [error, setError] = useState(null);
-  // const filters = ["All", "Seasonal", "Occasion", "Customize"]; // Filter options
+  // --------------------
+  // State Hooks
+  // --------------------
+  const [searchText, setSearchText] = useState(""); // Search input text
+  const [isLoading, setIsLoading] = useState(true); // Loading indicator
+  const [flowers, setFlowers] = useState([]); // Flower list data
+  const [favorites, setFavorites] = useState([]); // User favorites
+  const [error, setError] = useState(null); // Error message
 
-  const isMounted = useRef(true); // Track if component is mounted
-  //check if the app is running on Android or iOS to set the correct host URL
-  const HOST =
-    Platform.OS === "android"
-      ? "http://10.0.2.2:3000"
-      : "http://192.168.1.71:3000";
+  const isMounted = useRef(true); // Prevent state updates after unmount
 
-  // Fetch flowers data from the server
-  // const fetchFlowersFromApi = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await fetch(`${HOST}/flowers`);
-  //     if (!response.ok) throw new Error("Failed to fetch flowers data.");
-  //     const data = await response.json();
-  //     setFlowers(data);
-  //     setError(null);
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const navigation = useNavigation();
+  const { user } = useUserState(); // Current logged-in user
 
+  const HOST = "http://192.168.1.71:3000"; // Local API host
+
+  // --------------------
+  // API Functions
+  // --------------------
+
+  // Fetch all flowers from API
   const fetchFlowersFromApi = async () => {
     const res = await fetch(`${HOST}/flowers`);
     if (!res.ok) throw new Error("Failed to fetch flowers data.");
     return res.json();
   };
 
-  // get data from API and merge with favorites status in AsyncStorage
+  // Fetch current user's favorites
+  const fetchFavorites = async () => {
+    if (!user) return [];
+    const res = await fetch(`${HOST}/favorites?userId=${user.id}`);
+    if (!res.ok) throw new Error("Failed to fetch favorites.");
+    return res.json();
+  };
+
+  // Load flowers and favorites
   const loadFlowers = useCallback(async () => {
     setIsLoading(true);
     try {
       const allFlowers = await fetchFlowersFromApi();
-      const favoriteIds = await getFavorites();
-
-      // merge based on favorite ids
-      //if there is no favorite id, keep the favorite according to the API data
-      let mergedFlowers;
-      if (favoriteIds && favoriteIds.length > 0) {
-        // if there are favorite ids, merge them with the API data
-        mergedFlowers = allFlowers.map((flower) => ({
-          ...flower,
-          favorite: favoriteIds.includes(flower.id),
-        }));
-      } else {
-        // if there are no favorite ids, keep the API data as is
-        mergedFlowers = allFlowers;
-      }
+      const favs = await fetchFavorites();
 
       if (isMounted.current) {
-        setFlowers(mergedFlowers);
+        setFavorites(favs);
+        setFlowers(
+          allFlowers.map((flower) => ({
+            ...flower,
+            favorite: favs.some((f) => f.flowerId === flower.id),
+          }))
+        );
         setError(null);
       }
     } catch (err) {
@@ -91,25 +81,23 @@ function Shop() {
     } finally {
       if (isMounted.current) setIsLoading(false);
     }
-  }, []);
+  }, [user?.id]);
 
+  // Search flowers by name
   const fetchFlowersByName = async (name) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${HOST}/flowers?name_like=${name}`);
-      if (!response.ok) throw new Error("Failed to search flowers data.");
-
-      const data = await response.json();
-
-      const favoriteIds = await getFavorites();
-
-      const merged = data.map((f) => ({
-        ...f,
-        favorite: favoriteIds.includes(f.id),
-      }));
+      const res = await fetch(`${HOST}/flowers?name_like=${name}`);
+      if (!res.ok) throw new Error("Failed to search flowers.");
+      const data = await res.json();
 
       if (isMounted.current) {
-        setFlowers(merged);
+        setFlowers(
+          data.map((flower) => ({
+            ...flower,
+            favorite: favorites.some((f) => f.flowerId === flower.id),
+          }))
+        );
         setError(null);
       }
     } catch (err) {
@@ -118,138 +106,101 @@ function Shop() {
       if (isMounted.current) setIsLoading(false);
     }
   };
-  const handleToggleFavorite = async (id) => {
-    const flower = flowers.find((f) => f.id === id);
-    if (!flower) return;
 
-    const updatedFavorite = !flower.favorite;
+  // --------------------
+  // Favorite toggle logic
+  // --------------------
+  const handleToggleFavorite = async (flowerId) => {
+    if (!user) {
+      Alert.alert("Login required", "Please log in to favorite flowers.");
+      return;
+    }
 
     try {
-      // update API
-      const res = await fetch(`${HOST}/flowers/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ favorite: updatedFavorite }),
-      });
+      // Check if flower is already favorited by user (not deleted)
+      const existingFav = favorites.find(
+        (fav) =>
+          fav.userId === user.id && fav.flowerId === flowerId && !fav.deleted
+      );
 
-      if (!res.ok) throw new Error("Failed to update favorite");
+      if (existingFav) {
+        // Already favorited → mark as deleted
+        await fetch(`${HOST}/favorites/${existingFav.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ deleted: true }),
+        });
 
-      // update AsyncStorage
-      if (updatedFavorite) {
-        await addFavorite(id);
+        setFavorites((prev) =>
+          prev.map((fav) =>
+            fav.id === existingFav.id ? { ...fav, deleted: true } : fav
+          )
+        );
       } else {
-        await removeFavorite(id);
+        // Not favorited → add new favorite
+        const res = await fetch(`${HOST}/favorites`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user.id, flowerId, deleted: false }),
+        });
+        const newFav = await res.json();
+
+        setFavorites((prev) => [...prev, newFav]);
       }
 
-      // update state
+      // Update flower state to toggle favorite icon in UI
       setFlowers((prev) =>
-        prev.map((item) =>
-          item.id === id ? { ...item, favorite: updatedFavorite } : item
+        prev.map((f) =>
+          f.id === flowerId ? { ...f, favorite: !f.favorite } : f
         )
       );
     } catch (err) {
       console.error(err);
-      Alert.alert("Error", "Failed to update favorite status.");
+      Alert.alert("Error", "Failed to toggle favorite.");
     }
   };
 
+  // --------------------
+  // Refresh data when screen is focused
+  // --------------------
   useFocusEffect(
     useCallback(() => {
       isMounted.current = true;
-      loadFlowers();
+
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const allFlowers = await fetchFlowersFromApi();
+          const favs = (await fetchFavorites()).filter((f) => !f.deleted);
+
+          if (!isMounted.current) return;
+
+          setFavorites(favs);
+          setFlowers(
+            allFlowers.map((flower) => ({
+              ...flower,
+              favorite: favs.some((f) => f.flowerId === flower.id),
+            }))
+          );
+          setError(null);
+        } catch (err) {
+          if (isMounted.current) setError(err.message);
+        } finally {
+          if (isMounted.current) setIsLoading(false);
+        }
+      };
+
+      fetchData();
 
       return () => {
         isMounted.current = false;
       };
-    }, [loadFlowers])
+    }, [user?.id])
   );
 
-  // const fetchFlowersByName = async (name) => {
-  //   console.log("Searching for flowers with name:", name);
-  //   try {
-  //     const response = await fetch(`${HOST}/flowers?name_like=${name}`);
-  //     if (!response.ok) {
-  //       throw new Error("Failed to search flowers data.");
-  //     }
-  //     const data = await response.json();
-  //     console.log("Searched flower data: ", data);
-  //     setFlowers(data);
-  //   } catch (error) {
-  //     setError(err.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  // const handleToggleFavorite = async (id) => {
-  //   const flower = flowers.find((f) => f.id === id);
-  //   if (!flower) return;
-
-  //   const updatedFavorite = !flower.favorite;
-  //   try {
-  //     const res = await fetch(`${HOST}/flowers/${id}`, {
-  //       method: "PATCH",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ favorite: updatedFavorite }),
-  //     });
-
-  //     if (!res.ok) {
-  //       throw new Error("Failed to update favorite");
-  //     }
-
-  //     // update state
-  //     setFlowers((prev) =>
-  //       prev.map((item) =>
-  //         item.id === id ? { ...item, favorite: updatedFavorite } : item
-  //       )
-  //     );
-  //   } catch (err) {
-  //     console.error(err);
-  //     Alert.alert("Error", "Failed to update favorite status.");
-  //   }
-  // };
-
-  // const renderCategories = ({ item }) => (
-  //   <TouchableOpacity
-  //     onPress={() => setActiveFilter(item)} // Update filter options on click
-  //   >
-  //     <View
-  //       className={`${
-  //         activeFilter === item ? "bg-[#C02C26]" : "bg-white"
-  //       }  my-2 mr-4 px-8 py-1.5 rounded-xl shadow-md`}
-  //     >
-  //       <Text
-  //         className={`font-semibold ${
-  //           activeFilter === item ? "text-white" : "text-slate-600"
-  //         }`}
-  //       >
-  //         {item}
-  //       </Text>
-  //     </View>
-  //   </TouchableOpacity>
-  // );
-  const navigation = useNavigation();
-  const renderFlowerItem = ({ item }) => (
-    <FlowerCard
-      image={imageMap[item.imageKey]} // Use the imageMap to get the correct image
-      name={item.name}
-      id={item.id}
-      price={item.price.toFixed(2)} // Format price to 2 decimal places
-      isFavorite={item.favorite}
-      onToggleFavorite={() => handleToggleFavorite(item.id)}
-      onClickCard={() => {
-        console.log(`Clicked on ${item.name}`);
-        navigation.navigate("flowerDetail", {
-          name: item.name,
-          image: imageMap[item.imageKey],
-          id: item.id,
-        });
-      }}
-    />
-  );
-
+  // --------------------
+  // Local image mapping
+  // --------------------
   const imageMap = {
     flowerBouquet01: require("../assets/images/flowerBouquet01.jpeg"),
     flowerBouquet02: require("../assets/images/flowerBouquet02.jpeg"),
@@ -262,14 +213,30 @@ function Shop() {
     flowerBouquet09: require("../assets/images/flowerBouquet09.jpeg"),
   };
 
-  // Refresh flowers data whenever screen is focused
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     fetchFlowersFromApi();
-  //   }, [])
-  // );
+  // --------------------
+  // Render single flower card
+  // --------------------
+  const renderFlowerItem = ({ item }) => (
+    <FlowerCard
+      image={imageMap[item.imageKey]}
+      name={item.name}
+      id={item.id}
+      price={item.price.toFixed(2)}
+      isFavorite={item.favorite}
+      onToggleFavorite={() => handleToggleFavorite(item.id)}
+      onClickCard={() => {
+        navigation.navigate("flowerDetail", {
+          name: item.name,
+          image: imageMap[item.imageKey],
+          id: item.id,
+        });
+      }}
+    />
+  );
 
-  // Conditionally define content based on state
+  // --------------------
+  // Conditional content rendering
+  // --------------------
   let content;
   if (isLoading) {
     content = <ActivityIndicator size="large" color="#C02C26" />;
@@ -288,26 +255,22 @@ function Shop() {
     );
   }
 
+  // --------------------
+  // Page UI
+  // --------------------
   return (
-    <SafeAreaView className="flex-1">
-      {/* <View className="flex flex-row items-center justify-start mx-8">
-        <Image
-          source={require("../assets/flowerLogoRed.png")}
-          className="w-10 h-10  mt-4"
-          resizeMode="contain"
-        />
-        <Text className="text-xl font-bold ml-2 mt-4">Good morning, Ella</Text>
-      </View> */}
-      {/* Header Logo */}
+    <View className="flex-1">
+      {/* Header */}
       <View className="items-center pt-16 pb-4">
         <Image
           source={require("../assets/logoRed.png")}
           className="h-10"
           resizeMode="contain"
         />
-        {/* <Text className="text-4xl font-bold text-[#C02C26]">Bloome</Text> */}
       </View>
-      <View className=" px-8 relative">
+
+      {/* Search bar */}
+      <View className="px-8 relative">
         <InputField
           placeholder="Search"
           value={searchText}
@@ -325,27 +288,10 @@ function Shop() {
           />
         </TouchableOpacity>
       </View>
-      {/* <View className="px-4">
-        <FlatList
-          data={filters}
-          horizontal={true}
-          showsVerticalScrollIndicator={false} // hide vertical scroll indicator
-          keyExtractor={(item) => item} // set unique key for each item
-          renderItem={renderCategories} // render each filter item
-        ></FlatList>
-      </View> */}
-      <View className="flex-1 px-8 mt-5">
-        {/* <FlatList
-          data={flowers}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderFlowerItem}
-          numColumns={2} // Display items in two columns
-          columnWrapperStyle={{ justifyContent: "flex-start" }}
-          showsVerticalScrollIndicator={false}
-        /> */}
-        {content}
-      </View>
-    </SafeAreaView>
+
+      {/* Flower list */}
+      <View className="flex-1 px-8 mt-5">{content}</View>
+    </View>
   );
 }
 

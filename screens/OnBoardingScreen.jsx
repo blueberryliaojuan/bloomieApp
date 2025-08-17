@@ -60,7 +60,7 @@ function OnBoardingScreen({ navigation }) {
           image: (
             <View className="items-center px-6">
               <Text className="text-5xl font-bold text-[#C02C26] mb-16 text-center">
-                Customize your Blooms
+                Fresh Flowers, Delivered Regularly
               </Text>
               <Image
                 source={require("../assets/images/onboarding/onboarding1.png")}
@@ -68,8 +68,8 @@ function OnBoardingScreen({ navigation }) {
                 resizeMode="contain"
               />
               <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
-                Choose flowers from a wide range of variety from our special
-                Bloom Collection.
+                Get stunning, seasonal arrangements delivered to your home
+                weekly or monthly, no effort needed.
               </Text>
             </View>
           ),
@@ -81,7 +81,7 @@ function OnBoardingScreen({ navigation }) {
           image: (
             <View className="items-center px-6">
               <Text className="text-5xl font-bold text-[#C02C26] mb-16 text-center">
-                Our florists will arrange them
+                Pick Your Bloomie Plan
               </Text>
               <Image
                 source={require("../assets/images/onboarding/onboarding2.png")}
@@ -89,8 +89,8 @@ function OnBoardingScreen({ navigation }) {
                 resizeMode="contain"
               />
               <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
-                Our specially-trained flower experts handpick only the freshest
-                blooms.
+                Choose a bouquet style and size that fits your space and mood.
+                Skip or cancel anytime.
               </Text>
             </View>
           ),
@@ -102,7 +102,7 @@ function OnBoardingScreen({ navigation }) {
           image: (
             <View className="items-center px-6">
               <Text className="text-5xl font-bold text-[#C02C26] mb-16 text-center">
-                We deliver your Bloomie
+                Enjoy Your Blooms
               </Text>
               <Image
                 source={require("../assets/images/onboarding/onboarding3.png")}
@@ -110,8 +110,8 @@ function OnBoardingScreen({ navigation }) {
                 resizeMode="contain"
               />
               <Text className="text-lg text-gray-600 mt-8 px-12 text-center">
-                You will receive your Bloomie bouquet fresh, carefully packaged,
-                and well-handled.
+                Our florists handpick and deliver fresh flowers — beautifully
+                packaged, right to your door.
               </Text>
             </View>
           ),

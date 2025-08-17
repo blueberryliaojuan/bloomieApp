@@ -25,7 +25,7 @@ export default function SuggestionCarousel({ data, imageMap, onAddFavorite }) {
       <View className="bg-white rounded-xl shadow-md p-3 w-full">
         <TouchableOpacity
           className="absolute z-10 bottom-4 right-4"
-          onPress={() => handleAddFavorite(item.id)}
+          onPress={() => handleAddFavorite(item)}
         >
           <View className="w-8 h-8 bg-[#C02C26] rounded-full items-center justify-center">
             <Icon name="heart" type="font-awesome" size={16} color="white" />
